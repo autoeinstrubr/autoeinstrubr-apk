@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-PT">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <!-- Viewport configurado para garantir responsividade e evitar zoom em dispositivos móveis -->
@@ -645,7 +645,7 @@
                             <span style="color:var(--text-muted);">↔</span>
                             <div style="flex:1;"><label style="font-size:0.8rem;">Temperatura (°C)</label><input type="number" id="thermoTemp" placeholder="Ex: 50" class="input-moderno" inputmode="decimal" step="any"></div>
                         </div>
-                        <div class="aviso">⚠️ Aproximação linear (α=0.00385) – erro até ~1°C acima de 200°C. Valores típicos: -200°C (18.52Ω) a 850°C (390.48Ω).</div>
+                        <div class="aviso" style="color: var(--primary);">✅ Padrão Profissional: Cálculo exato via equação de Callendar-Van Dusen (Norma IEC 60751 / ITS-90).</div>
                     </div>
                 </div>
             </div>
@@ -999,26 +999,57 @@
             calcularValvula();
         }
 
-        // ========================== FERRAMENTA PT100 (Resistência ↔ Temperatura) ==========================
+       // ========================== FERRAMENTA PT100 (Callendar-Van Dusen) ==========================
         const sinalOhms = document.getElementById('thermoSignal');
         const temperaturaCelsius = document.getElementById('thermoTemp');
 
         if (sinalOhms) {
-            function resistenciaParaTemp(r) {
-                if (r < 18.52) r = 18.52;   // limite inferior -200°C
-                if (r > 390.48) r = 390.48; // limite superior 850°C
-                return ((r - 100) / 0.385).toFixed(2);
-            }
+            // Constantes do padrão IEC 60751 (ITS-90)
+            const R0 = 100.0;
+            const A = 3.9083e-3;
+            const B = -5.775e-7;
+            const C = -4.183e-12;
+
             function tempParaResistencia(t) {
                 if (t < -200) t = -200;
                 if (t > 850) t = 850;
-                return (100 + (t * 0.385)).toFixed(2);
+
+                if (t >= 0) {
+                    // Equação para T >= 0°C
+                    return (R0 * (1 + A * t + B * t * t)).toFixed(2);
+                } else {
+                    // Equação para T < 0°C
+                    return (R0 * (1 + A * t + B * t * t + C * (t - 100) * Math.pow(t, 3))).toFixed(2);
+                }
             }
+
+            function resistenciaParaTemp(r) {
+                if (r < 18.52) r = 18.52;   // limite -200°C
+                if (r > 390.48) r = 390.48; // limite 850°C
+
+                if (r >= 100.0) {
+                    // Resolução exata pela fórmula quadrática (Bhaskara) para T >= 0°C
+                    const discriminante = A * A - 4 * B * (1 - r / R0);
+                    const t = (-A + Math.sqrt(discriminante)) / (2 * B);
+                    return t.toFixed(2);
+                } else {
+                    // Resolução iterativa (Método de Newton-Raphson) para T < 0°C
+                    let t = -100; // Chute inicial
+                    for (let i = 0; i < 5; i++) {
+                        let f = R0 * (1 + A * t + B * t * t + C * (t - 100) * Math.pow(t, 3)) - r;
+                        let df = R0 * (A + 2 * B * t - 300 * C * t * t + 4 * C * Math.pow(t, 3));
+                        t = t - f / df;
+                    }
+                    return t.toFixed(2);
+                }
+            }
+
             sinalOhms.addEventListener('input', () => {
                 let r = parseFloat(sinalOhms.value);
                 if (isNaN(r)) { temperaturaCelsius.value = ''; return; }
                 temperaturaCelsius.value = resistenciaParaTemp(r);
             });
+
             temperaturaCelsius.addEventListener('input', () => {
                 let t = parseFloat(temperaturaCelsius.value);
                 if (isNaN(t)) { sinalOhms.value = ''; return; }
