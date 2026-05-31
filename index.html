@@ -533,44 +533,72 @@
                 <div class="panel">
                     <div class="panel-header"><h3>Placa de Orifício (ISO 5167)</h3></div>
                     <div class="panel-body">
-                        <div class="info-box"><strong>Vazão a partir do ΔP</strong><br>Equação simplificada para líquidos e vapor. Coeficiente de descarga estimado (C ≈ 0.62).</div>
+                        <div class="info-box"><strong>Vazão por Pressão Diferencial (ISO 5167)</strong><br>Cálculo iterativo do Coeficiente de Descarga (C) em função do Número de Reynolds (Re).</div>
+                        
                         <div class="control-group">
                             <h4>Parâmetros do Fluido</h4>
                             <select id="orificeFluid" class="input-moderno">
-                                <option value="agua">Água (ρ = 1000 kg/m³)</option>
-                                <option value="vapor">Vapor d'água (ρ ajustável)</option>
+                                <option value="agua">Água (ρ = 1000 kg/m³, μ = 1.0 cP)</option>
+                                <option value="vapor">Vapor d'água (ρ ajustável, μ ≈ 0.015 cP)</option>
                             </select>
-                            <div id="orificeDensityGroup" style="margin-top: 5px;">
-                                <label style="font-size:0.85rem;">Densidade (kg/m³)</label>
-                                <input type="number" id="orificeDensity" value="1000" class="input-moderno" inputmode="decimal" step="any">
+                            
+                            <div style="display:flex; gap:10px; margin-top: 5px;">
+                                <div id="orificeDensityGroup" style="flex:1;">
+                                    <label style="font-size:0.85rem;">Densidade (kg/m³)</label>
+                                    <input type="number" id="orificeDensity" value="1000" class="input-moderno" inputmode="decimal" step="any">
+                                </div>
+                                <div style="flex:1;">
+                                    <label style="font-size:0.85rem;">Viscos. Dinâmica (cP)</label>
+                                    <input type="number" id="orificeVisc" value="1.0" class="input-moderno" inputmode="decimal" step="any" title="Água a 20°C ≈ 1.0 cP">
+                                </div>
                             </div>
                         </div>
+
                         <div class="control-group">
-                            <h4>Dimensões do Elemento</h4>
-                            <label style="font-size:0.85rem;">Diâmetro da Tubulação (mm)</label>
-                            <input type="number" id="orificePipeDiam" value="100" class="input-moderno" inputmode="decimal" step="any">
-                            <label style="font-size:0.85rem;">Diâmetro do Orifício (mm)</label>
-                            <input type="number" id="orificeHoleDiam" value="50" class="input-moderno" inputmode="decimal" step="any">
+                            <h4>Dimensões do Elemento (Tomada de Flange)</h4>
+                            <div style="display:flex; gap:10px;">
+                                <div style="flex:1;">
+                                    <label style="font-size:0.85rem;">Diâm. Tubo D (mm)</label>
+                                    <input type="number" id="orificePipeDiam" value="100" class="input-moderno" inputmode="decimal" step="any">
+                                </div>
+                                <div style="flex:1;">
+                                    <label style="font-size:0.85rem;">Furo Orifício d (mm)</label>
+                                    <input type="number" id="orificeHoleDiam" value="50" class="input-moderno" inputmode="decimal" step="any">
+                                </div>
+                            </div>
                         </div>
+
                         <div class="control-group">
                             <h4>Condições de Processo</h4>
                             <label style="font-size:0.85rem;">Diferencial de Pressão ΔP (mbar)</label>
                             <input type="number" id="orificeDeltaP" value="500" class="input-moderno" inputmode="decimal" step="any">
-                            <label style="font-size:0.85rem;">Pressão Estática (bar abs) – para vapor</label>
-                            <input type="number" id="orificeStaticP" value="10" class="input-moderno" inputmode="decimal" step="any">
-                            <label style="font-size:0.85rem;">Temperatura (°C) – para vapor</label>
-                            <input type="number" id="orificeTemp" value="200" class="input-moderno" inputmode="decimal" step="any">
-                            <div class="aviso" id="densityHint">Densidade da água: 1000 kg/m³</div>
-                            <div class="aviso aviso-warning" id="betaWarning" style="display: none;"></div>
-                            <div class="aviso" id="cInfo">Cálculo utilizando Coeficiente de Descarga (C) simplificado para alto Reynolds.</div>
+                            
+                            <div style="display:flex; gap:10px; margin-top: 10px;">
+                                <div style="flex:1;">
+                                    <label style="font-size:0.8rem;">P. Estática (bar abs)</label>
+                                    <input type="number" id="orificeStaticP" value="10" class="input-moderno" inputmode="decimal" step="any">
+                                </div>
+                                <div style="flex:1;">
+                                    <label style="font-size:0.8rem;">Temperatura (°C)</label>
+                                    <input type="number" id="orificeTemp" value="200" class="input-moderno" inputmode="decimal" step="any">
+                                </div>
+                            </div>
+                            
+                            <div class="aviso" id="densityHint">Densidade da água: 1000 kg/m³ | Viscosidade: 1.0 cP</div>
+                            
+                            <div id="betaWarning" style="display:none; margin-top:15px; padding:10px; border-radius:8px; background:rgba(234,179,8,0.1); border-left:3px solid #eab308; font-size:0.8rem; color:#eab308;"></div>
+                            <div id="reynoldsWarning" style="display:none; margin-top:10px; padding:10px; border-radius:8px; background:rgba(239,68,68,0.1); border-left:3px solid var(--danger); font-size:0.8rem; color:var(--text-main);"></div>
                         </div>
+
                         <div class="result-box">
-                            <div style="display:flex; justify-content:space-around; flex-wrap:wrap;">
-                                <div><span style="color:var(--text-main); font-size:0.8rem;">β</span><span class="result-val" id="orificeBeta">---</span></div>
+                            <div style="display:flex; justify-content:space-around; flex-wrap:wrap; margin-bottom: 15px;">
+                                <div><span style="color:var(--text-main); font-size:0.8rem;">β (Beta)</span><span class="result-val" id="orificeBeta">---</span></div>
                                 <div><span style="color:var(--text-main); font-size:0.8rem;">Coef. C</span><span class="result-val" id="orificeC">---</span></div>
-                                <div><span style="color:var(--text-main); font-size:0.8rem;">Vazão Vol.</span><span class="result-val" id="orificeFlowVol">0.00 m³/h</span></div>
-                                <div><span style="color:var(--text-main); font-size:0.8rem;">Vazão Mass.</span><span class="result-val" id="orificeFlowMass">0.00 kg/h</span></div>
-                                <div><span style="color:var(--text-main); font-size:0.8rem;">Velocidade</span><span class="result-val" id="orificeVelocity">0.00 m/s</span></div>
+                                <div><span style="color:var(--text-main); font-size:0.8rem;">Reynolds (Re)</span><span class="result-val" id="orificeRe" style="color:#eab308;">---</span></div>
+                            </div>
+                            <div style="border-top: 1px solid var(--border); padding-top: 10px; display:flex; justify-content:space-around; flex-wrap:wrap;">
+                                <div><span style="color:var(--text-main); font-size:0.8rem;">Vazão Volumétrica</span><span class="result-val" id="orificeFlowVol">0.00 m³/h</span></div>
+                                <div><span style="color:var(--text-main); font-size:0.8rem;">Vazão Mássica</span><span class="result-val" id="orificeFlowMass">0.00 kg/h</span></div>
                             </div>
                         </div>
                     </div>
@@ -1218,22 +1246,26 @@
         })();
 
         // ========================== FERRAMENTA PLACA DE ORIFÍCIO ==========================
+        // ========================== FERRAMENTA PLACA DE ORIFÍCIO (Stolz / Iterativo) ==========================
         (function initOrifice() {
             const fluidSelect = document.getElementById('orificeFluid');
             const densityInput = document.getElementById('orificeDensity');
+            const viscInput = document.getElementById('orificeVisc'); // Novo
             const pipeDiam = document.getElementById('orificePipeDiam');
             const holeDiam = document.getElementById('orificeHoleDiam');
             const deltaP = document.getElementById('orificeDeltaP');
             const staticP = document.getElementById('orificeStaticP');
             const temp = document.getElementById('orificeTemp');
+            
             const densityHint = document.getElementById('densityHint');
             const betaWarning = document.getElementById('betaWarning');
+            const reWarning = document.getElementById('reynoldsWarning'); // Novo
 
             const betaSpan = document.getElementById('orificeBeta');
             const cSpan = document.getElementById('orificeC');
+            const reSpan = document.getElementById('orificeRe'); // Novo
             const flowVolSpan = document.getElementById('orificeFlowVol');
             const flowMassSpan = document.getElementById('orificeFlowMass');
-            const velSpan = document.getElementById('orificeVelocity');
 
             function vaporDensity(P_bar_abs, T_Celsius) {
                 const P_Pa = P_bar_abs * 1e5;
@@ -1246,19 +1278,20 @@
             function updateDensityHint() {
                 const fluid = fluidSelect.value;
                 if (fluid === 'agua') {
-                    densityInput.value = 1000;
-                    densityInput.disabled = true;
-                    densityHint.textContent = 'Densidade da água: 1000 kg/m³ (padrão)';
+                    densityInput.value = 1000; densityInput.disabled = true;
+                    viscInput.value = 1.0;     // Viscosidade da água ~1.0 cP
+                    densityHint.textContent = 'Água: Densidade = 1000 kg/m³ | Viscosidade = 1.0 cP';
                 } else {
                     densityInput.disabled = false;
+                    viscInput.value = 0.015;   // Chute inicial para vapor ~0.015 cP
                     let P = parseFloat(staticP.value);
                     let T = parseFloat(temp.value);
                     if (!isNaN(P) && !isNaN(T)) {
                         let rho = vaporDensity(P, T);
                         densityInput.value = rho.toFixed(2);
-                        densityHint.textContent = `Densidade do vapor calculada: ${rho.toFixed(2)} kg/m³ a ${P} bar e ${T}°C`;
+                        densityHint.textContent = `Vapor estimado: Densidade = ${rho.toFixed(2)} kg/m³ a ${P} bar e ${T}°C`;
                     } else {
-                        densityHint.textContent = 'Insira pressão e temperatura para calcular densidade do vapor.';
+                        densityHint.textContent = 'Insira pressão e temperatura para calcular vapor.';
                     }
                 }
             }
@@ -1268,45 +1301,78 @@
                 let d_mm = parseFloat(holeDiam.value);
                 let dp_mbar = parseFloat(deltaP.value);
                 let rho = parseFloat(densityInput.value);
+                let visc_cp = parseFloat(viscInput.value);
 
-                if (isNaN(D_mm) || isNaN(d_mm) || isNaN(dp_mbar) || isNaN(rho) || D_mm <= 0 || d_mm <= 0 || dp_mbar <= 0 || rho <= 0) {
-                    betaSpan.textContent = '---'; cSpan.textContent = '---';
-                    flowVolSpan.textContent = 'inválido'; flowMassSpan.textContent = 'inválido'; velSpan.textContent = 'inválido';
-                    betaWarning.style.display = 'none';
+                if (isNaN(D_mm) || isNaN(d_mm) || isNaN(dp_mbar) || isNaN(rho) || isNaN(visc_cp) || D_mm <= 0 || d_mm <= 0 || dp_mbar <= 0 || rho <= 0 || visc_cp <= 0) {
+                    betaSpan.textContent = '---'; cSpan.textContent = '---'; reSpan.textContent = '---';
+                    flowVolSpan.textContent = 'inválido'; flowMassSpan.textContent = 'inválido';
+                    betaWarning.style.display = 'none'; reWarning.style.display = 'none';
                     return;
                 }
 
                 let D = D_mm / 1000;
                 let d = d_mm / 1000;
-                let dp_Pa = dp_mbar * 100;
                 let beta = d / D;
+                let dp_Pa = dp_mbar * 100;
+                let visc_Pa_s = visc_cp / 1000; // Conversão de cP para Pa.s
+                
                 let A0 = Math.PI * d * d / 4;
-                let C = 0.602 + 0.025 * Math.pow(beta, 2.5);   
                 let E = 1 / Math.sqrt(1 - Math.pow(beta, 4));
-                let m_dot = C * E * A0 * Math.sqrt(2 * rho * dp_Pa);
 
+                // 1. Chute inicial: Escoamento altamente turbulento (Re = 10^6)
+                let Re = 1e6;
+                let C = 0;
+                let m_dot = 0;
+
+                // 2. Loop de Iteração (Equação de Stolz para Tomadas de Flange)
+                // O valor converge incrivelmente rápido, 5 iterações são mais que suficientes.
+                for (let i = 0; i < 5; i++) {
+                    // Equação de Stolz simplificada (Flange Taps)
+                    C = 0.5959 + 0.0312 * Math.pow(beta, 2.1) - 0.184 * Math.pow(beta, 8) + 91.71 * Math.pow(beta, 2.5) * Math.pow(Re, -0.75);
+                    
+                    // Recalcula Vazão Mássica (kg/s)
+                    m_dot = C * E * A0 * Math.sqrt(2 * rho * dp_Pa);
+                    
+                    // Recalcula Reynolds do Tubo
+                    Re = (4 * m_dot) / (Math.PI * D * visc_Pa_s);
+                }
+
+                // 3. Atualizar Interface Visual
                 betaSpan.textContent = beta.toFixed(4);
                 cSpan.textContent = C.toFixed(4);
+                
+                // Formatação bonita para o Reynolds (ex: 1.25e+5 ou 125,000)
+                if(Re > 1e6) { reSpan.textContent = Re.toExponential(2); } 
+                else { reSpan.textContent = Math.round(Re).toLocaleString('pt-BR'); }
 
+                // Diagnóstico Beta (Norma ISO 5167)
                 if (beta < 0.1 || beta > 0.75) {
-                    betaWarning.textContent = `⚠️ β = ${beta.toFixed(4)} fora da norma ISO 5167 (0,1 a 0,75). O cálculo pode ter precisão reduzida.`;
+                    betaWarning.textContent = `⚠️ β = ${beta.toFixed(4)} fora da norma ISO 5167 (0.1 a 0.75). A incerteza da medição será alta.`;
                     betaWarning.style.display = 'block';
                 } else {
                     betaWarning.style.display = 'none';
                 }
 
-                if (isNaN(m_dot) || m_dot < 0 || beta >= 1) {
-                    flowVolSpan.textContent = 'erro'; flowMassSpan.textContent = 'erro'; velSpan.textContent = 'erro'; return;
+                // Diagnóstico Reynolds Escoamento Laminar / Transição
+                if (Re < 10000) {
+                    reWarning.innerHTML = `<strong>⚠️ Alerta de Escoamento (Re = ${Math.round(Re)}):</strong> O regime está abaixo de 10.000. O escoamento não é totalmente turbulento, quebrando a premissa de constância da placa de orifício. Leituras altamente imprecisas.`;
+                    reWarning.style.display = 'block';
+                    reSpan.style.color = 'var(--danger)';
+                } else {
+                    reWarning.style.display = 'none';
+                    reSpan.style.color = 'var(--primary)';
                 }
 
+                if (isNaN(m_dot) || m_dot < 0 || beta >= 1) {
+                    flowVolSpan.textContent = 'erro'; flowMassSpan.textContent = 'erro'; return;
+                }
+
+                // 4. Resultados Finais
                 let m_dot_kg_h = m_dot * 3600;
                 let vol_m3_h = m_dot_kg_h / rho;
-                let area_pipe = Math.PI * D * D / 4;
-                let vel = (m_dot / rho) / area_pipe;
 
                 flowVolSpan.textContent = vol_m3_h.toFixed(2) + ' m³/h';
                 flowMassSpan.textContent = m_dot_kg_h.toFixed(2) + ' kg/h';
-                velSpan.textContent = vel.toFixed(3) + ' m/s';
             }
 
             function updateAndCalculate() {
@@ -1317,6 +1383,7 @@
             if (fluidSelect) {
                 fluidSelect.addEventListener('change', updateAndCalculate);
                 densityInput.addEventListener('input', calcularVazaoOrificio);
+                viscInput.addEventListener('input', calcularVazaoOrificio); // Listener para viscosidade
                 pipeDiam.addEventListener('input', calcularVazaoOrificio);
                 holeDiam.addEventListener('input', calcularVazaoOrificio);
                 deltaP.addEventListener('input', calcularVazaoOrificio);
