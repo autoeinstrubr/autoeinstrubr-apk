@@ -2,49 +2,44 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <!-- Viewport configurado para garantir responsividade e evitar zoom em dispositivos móveis -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Automação & Instrumentação BR</title>
-    <!-- Fonte moderna e limpa para melhor legibilidade -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* ================================ */
-        /*  VARIÁVEIS GLOBAIS (DARK THEME)  */
+        /* VARIÁVEIS GLOBAIS (DARK THEME)  */
         /* ================================ */
         :root {
-            --bg-main: #020617;      /* fundo principal escuro */
-            --bg-panel: #0f172a;     /* fundo dos cards e painéis */
-            --bg-nav: #1e293b;       /* fundo da barra de navegação */
-            --accent: #38bdf8;       /* cor de destaque (azul claro) */
-            --primary: #22c55e;      /* verde para ações principais */
-            --text-main: #f8fafc;    /* texto principal claro */
-            --text-muted: #94a3b8;   /* texto secundário acinzentado */
-            --border: #334155;       /* cor das bordas */
-            --danger: #ef4444;       /* vermelho para alertas/erros */
-            --nav-height: 65px;      /* altura fixa da navegação inferior */
-            --header-height: 70px;    /* altura do cabeçalho superior */
+            --bg-main: #020617;      
+            --bg-panel: #0f172a;     
+            --bg-nav: #1e293b;       
+            --accent: #38bdf8;       
+            --primary: #22c55e;      
+            --text-main: #f8fafc;    
+            --text-muted: #94a3b8;   
+            --border: #334155;       
+            --danger: #ef4444;       
+            --nav-height: 65px;      
+            --header-height: 70px;    
         }
 
-        /* Reset básico e box-sizing consistente */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
             font-family: 'Inter', sans-serif;
-            -webkit-tap-highlight-color: transparent; /* remove destaque ao tocar em dispositivos móveis */
+            -webkit-tap-highlight-color: transparent; 
         }
 
-        /* Corpo da página: ocupa toda a altura, sem scroll duplicado */
         body {
             background-color: var(--bg-main);
             color: var(--text-main);
             height: 100vh;
             display: flex;
             flex-direction: column;
-            overflow: hidden;       /* esconde scroll do body, o main terá scroll próprio */
+            overflow: hidden;       
         }
 
-        /* Cabeçalho fixo com o logo */
         header {
             height: var(--header-height);
             background-color: #ffffff;
@@ -61,7 +56,6 @@
             object-fit: contain;
         }
 
-        /* Área principal com scroll suave */
         main {
             flex: 1;
             position: relative;
@@ -70,7 +64,6 @@
             padding-bottom: 20px;
         }
 
-        /* Abas (conteúdo dinâmico) */
         .tab-content {
             display: none;
             padding: 20px;
@@ -84,9 +77,6 @@
             to   { opacity: 1; transform: translateY(0); }
         }
 
-        /* ====================== */
-        /*  CARDS E FERRAMENTAS   */
-        /* ====================== */
         .section-title {
             font-size: 1.4rem;
             margin-bottom: 15px;
@@ -109,7 +99,7 @@
             font-size: 0.95rem;
         }
 
-        /* Grade de botões das ferramentas */
+        /* Grade de botões das ferramentas (Corrigida com Flexbox) */
         .grid-ferramentas {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
@@ -120,9 +110,13 @@
             border: 1px solid var(--border);
             border-radius: 16px;
             padding: 20px 15px;
-            text-align: center;
             cursor: pointer;
             transition: 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
         }
         .btn-ferramenta:active {
             transform: scale(0.95);
@@ -138,7 +132,6 @@
             font-size: 0.9rem;
         }
 
-        /* Botão voltar dentro das ferramentas */
         .btn-voltar {
             display: inline-block;
             background-color: transparent;
@@ -152,7 +145,6 @@
             cursor: pointer;
         }
 
-        /* Painéis (reutilizável) */
         .panel {
             background: rgba(17,24,39,.9);
             border: 1px solid var(--border);
@@ -174,10 +166,7 @@
             padding: 16px;
         }
 
-        /* Grupos de formulário */
-        .control-group {
-            margin-bottom: 20px;
-        }
+        .control-group { margin-bottom: 20px; }
         .control-group h4 {
             margin: 0 0 12px;
             font-size: 0.85rem;
@@ -186,7 +175,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* Inputs modernos (estilo escuro) */
         .input-moderno {
             width: 100%;
             background: #020617;
@@ -199,10 +187,7 @@
             box-sizing: border-box;
             margin-bottom: 10px;
         }
-        .input-moderno:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
+        .input-moderno:focus { outline: none; border-color: var(--primary); }
         select.input-moderno {
             cursor: pointer;
             appearance: none;
@@ -213,7 +198,6 @@
             padding-right: 30px;
         }
 
-        /* Botão secundário padrão */
         .btn-secondary {
             background: #1e293b;
             color: var(--text-main);
@@ -226,260 +210,100 @@
             cursor: pointer;
         }
 
-        /* Feed de artigos (blog) */
-        .loader {
-            text-align: center;
-            color: var(--text-muted);
-            padding: 40px 0;
-            font-size: 0.9rem;
-        }
-        .post-card {
-            background: var(--bg-panel);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            overflow: hidden;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-        }
-        .post-image {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-        }
-        .post-content {
-            padding: 16px;
-        }
-        .post-date {
-            font-size: 0.75rem;
-            color: var(--accent);
-            text-transform: uppercase;
-            margin-bottom: 8px;
-            display: block;
-        }
-        .post-title {
-            font-size: 1.15rem;
-            color: var(--text-main);
-            margin-bottom: 10px;
-        }
-        .post-btn {
-            display: inline-block;
-            background: var(--bg-nav);
-            color: var(--primary);
-            border: 1px solid var(--border);
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            text-decoration: none;
-        }
+        .loader { text-align: center; color: var(--text-muted); padding: 40px 0; font-size: 0.9rem; }
+        .post-card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+        .post-image { width: 100%; height: 180px; object-fit: cover; }
+        .post-content { padding: 16px; }
+        .post-date { font-size: 0.75rem; color: var(--accent); text-transform: uppercase; margin-bottom: 8px; display: block; }
+        .post-title { font-size: 1.15rem; color: var(--text-main); margin-bottom: 10px; }
+        .post-btn { display: inline-block; background: var(--bg-nav); color: var(--primary); border: 1px solid var(--border); padding: 8px 16px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; text-decoration: none; }
 
-        /* Caixas de resultado e informações */
-        .result-box {
-            background: rgba(34, 197, 94, 0.1);
-            border: 1px solid var(--primary);
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            margin-top: 15px;
-        }
-        .result-val {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary);
-            display: block;
-            margin-top: 5px;
-        }
-        .info-box {
-            background: rgba(15,23,42,0.8);
-            border: 1px solid var(--border);
-            border-left: 3px solid var(--accent);
-            padding: 14px;
-            border-radius: 10px;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-bottom: 15px;
-        }
-        .info-box strong {
-            color: var(--text-main);
-        }
+        .result-box { background: rgba(34, 197, 94, 0.1); border: 1px solid var(--primary); padding: 15px; border-radius: 10px; text-align: center; margin-top: 15px; }
+        .result-val { font-size: 1.5rem; font-weight: 700; color: var(--primary); display: block; margin-top: 5px; }
+        .info-box { background: rgba(15,23,42,0.8); border: 1px solid var(--border); border-left: 3px solid var(--accent); padding: 14px; border-radius: 10px; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px; }
+        .info-box strong { color: var(--text-main); }
 
-        /* Simulador PID - estrutura especial */
-        #pid-sim-widget {
-            width: 100%;
-        }
-        #pid-sim-widget .pid-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        /* Reordena visualmente os painéis para mobile: gráfico primeiro */
+        #pid-sim-widget { width: 100%; }
+        #pid-sim-widget .pid-grid { display: flex; flex-direction: column; gap: 20px; }
         #pid-sim-widget .pid-grid .panel:nth-child(1) { order: 2; }
         #pid-sim-widget .pid-grid .panel:nth-child(2) { order: 1; position: sticky; top: -20px; z-index: 50; background-color: var(--bg-panel); box-shadow: 0 15px 20px -5px rgba(0,0,0,0.6); }
 
-        /* Sliders customizados */
-        .slider-row {
-            margin-bottom: 15px;
-        }
-        .slider-row label {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.85rem;
-        }
-        .slider-row input[type=range] {
-            width: 100%;
-            accent-color: var(--primary);
-        }
+        .slider-row { margin-bottom: 15px; }
+        .slider-row label { display: flex; justify-content: space-between; font-size: 0.85rem; }
+        .slider-row input[type=range] { width: 100%; accent-color: var(--primary); }
 
-        /* Métricas do PID */
-        .metrics {
-            display: grid;
-            grid-template-columns: repeat(3,1fr);
-            gap: 10px;
-            padding: 16px;
-            border-top: 1px solid var(--border);
-        }
-        .metric-card {
-            background: linear-gradient(180deg,#172033,#0f172a);
+        .metrics { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; padding: 16px; border-top: 1px solid var(--border); }
+        .metric-card { background: linear-gradient(180deg,#172033,#0f172a); border: 1px solid var(--border); border-radius: 12px; padding: 10px; text-align: center; }
+        .metric-title { font-size: 0.7rem; color: var(--text-muted); }
+        .metric-value { font-size: 1rem; font-weight: 700; color: var(--text-main); }
+
+        nav.bottom-nav { height: var(--nav-height); background-color: var(--bg-nav); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; padding-bottom: env(safe-area-inset-bottom); z-index: 10; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); text-decoration: none; width: 100%; height: 100%; border: none; background: none; cursor: pointer; }
+        .nav-item svg { width: 24px; height: 24px; margin-bottom: 4px; fill: currentColor; }
+        .nav-item.active { color: var(--accent); }
+        .nav-item.active svg { transform: scale(1.1); }
+
+        .aviso { font-size: 0.7rem; color: var(--accent); margin-top: 5px; }
+        .aviso-warning { color: var(--danger); }
+
+        .store-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; margin-top: 15px; }
+        .product-card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 12px; padding: 15px; text-align: center; display: flex; flex-direction: column; justify-content: space-between; }
+        .product-img { width: 100%; height: 120px; object-fit: contain; margin-bottom: 10px; background: #ffffff; border-radius: 8px; padding: 5px; }
+        .product-title { font-size: 0.9rem; color: var(--text-main); font-weight: 600; margin-bottom: 5px; }
+        .product-desc { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px; line-height: 1.3; }
+        .product-btn { display: block; background: #ffe600; color: #2d3277; text-decoration: none; font-weight: bold; font-size: 0.85rem; padding: 10px; border-radius: 8px; transition: 0.2s; }
+        .product-btn:active { transform: scale(0.95); }
+
+        /* Controlo Segmentado (Abas Internas - Bombas) */
+        .segmented-control {
+            display: flex;
+            background: #020617;
             border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 10px;
+            border-radius: 10px;
+            padding: 4px;
+            margin-bottom: 20px;
+        }
+        .segmented-btn {
+            flex: 1;
             text-align: center;
-        }
-        .metric-title {
-            font-size: 0.7rem;
+            padding: 10px;
             color: var(--text-muted);
-        }
-        .metric-value {
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--text-main);
-        }
-
-        /* BARRA DE NAVEGAÇÃO INFERIOR (BOTTOM TABS) */
-        nav.bottom-nav {
-            height: var(--nav-height);
-            background-color: var(--bg-nav);
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            padding-bottom: env(safe-area-inset-bottom);
-            z-index: 10;
-        }
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: var(--text-muted);
-            text-decoration: none;
-            width: 100%;
-            height: 100%;
+            background: transparent;
             border: none;
-            background: none;
-            cursor: pointer;
-        }
-        .nav-item svg {
-            width: 24px;
-            height: 24px;
-            margin-bottom: 4px;
-            fill: currentColor;
-        }
-        .nav-item.active {
-            color: var(--accent);
-        }
-        .nav-item.active svg {
-            transform: scale(1.1);
-        }
-
-        /* Avisos e mensagens auxiliares */
-        .aviso {
-            font-size: 0.7rem;
-            color: var(--accent);
-            margin-top: 5px;
-        }
-        .aviso-warning {
-            color: var(--danger);
-        }
-
-        /* Vitrine Técnica (produtos afiliados) */
-        .store-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-        }
-        .product-card {
-            background: var(--bg-panel);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 15px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .product-img {
-            width: 100%;
-            height: 120px;
-            object-fit: contain;
-            margin-bottom: 10px;
-            background: #ffffff;
             border-radius: 8px;
-            padding: 5px;
-        }
-        .product-title {
-            font-size: 0.9rem;
-            color: var(--text-main);
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-        .product-desc {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-bottom: 12px;
-            line-height: 1.3;
-        }
-        .product-btn {
-            display: block;
-            background: #ffe600;
-            color: #2d3277;
-            text-decoration: none;
-            font-weight: bold;
             font-size: 0.85rem;
-            padding: 10px;
-            border-radius: 8px;
-            transition: 0.2s;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
         }
-
-        /* Faz uma transição suave entre as abas das duas calculadoras de Bombas Centrífugas - Leis de Afinidade e Cálculo de NPSH */
-        .product-btn:active {
-            transform: scale(0.95);
+        .segmented-btn.active {
+            background: var(--bg-nav);
+            color: var(--primary);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        #pump-panel-affinity, #pump-panel-npsh {
+            transition: opacity 1.5s ease;
         }
     </style>
 </head>
 <body>
 
-    <!-- CABEÇALHO COM LOGO -->
     <header>
         <img src="https://blogger.googleusercontent.com/img/a/AVvXsEiAim_LlTq75nDnKKVpuo8MHUhD1s-Cwi34Qs3z5luYugDkN_JszkqN_C5MXfjJTvWonJXo2TSfwOFjRika8hJ_PDTuVdWSQ8QguECFQWv2Gz_hXN0VJMO5cwOAEAWGM7csinDXkDwlvgJga62PqME9EVJ1yNGU85Bp9INpNgSQnxkKd1h80406naad92pe=w800" alt="Logo" class="header-logo">
     </header>
 
-    <!-- ÁREA PRINCIPAL DINÂMICA (CONTEÚDO DAS ABAS) -->
     <main>
-        <!-- ABA 1: FEED DE ARTIGOS (BLOG) -->
         <div id="tab-feed" class="tab-content active">
             <h2 class="section-title">Últimos Artigos</h2>
             <div id="feed-container"><div class="loader">A carregar publicações...</div></div>
-            <!-- Controles de paginação do feed -->
             <div id="pagination-container" style="display: flex; justify-content: space-between; margin-top: 20px; padding: 0 5px;">
                 <button id="btnPrev" class="btn-secondary" style="width: 48%; display: none;" onclick="mudarPagina(-1)">← Voltar</button>
                 <button id="btnNext" class="btn-secondary" style="width: 48%; display: none;" onclick="mudarPagina(1)">Avançar →</button>
             </div>
         </div>
 
-        <!-- ABA 2: CAIXA DE FERRAMENTAS (COM TODOS OS UTILITÁRIOS) -->
         <div id="tab-tools" class="tab-content">
-            <!-- Menu principal das ferramentas (grade) -->
             <div id="tools-menu">
                 <h2 class="section-title">Caixa de Ferramentas</h2>
                 <div class="grid-ferramentas">
@@ -492,31 +316,27 @@
                     <div class="btn-ferramenta" onclick="openTool('tool-protocols')"><span class="icon">🔌</span><span class="title">Guia Redes</span></div>
                     <div class="btn-ferramenta" onclick="openTool('tool-orifice')"><span class="icon">⚙️</span><span class="title">Placa Orifício</span></div>
                     <div class="btn-ferramenta" onclick="openTool('tool-thermocouples')"><span class="icon">📋</span><span class="title">Guia Termopares</span></div>
+                    <div class="btn-ferramenta" onclick="openTool('tool-pump')"><span class="icon">🌀</span><span class="title">Bombas Centríf.</span></div>
                 </div>
             </div>
 
-            <!-- ================= FERRAMENTA: SIMULADOR PID ================= -->
             <div id="tool-pid" style="display: none;">
                 <button class="btn-voltar" onclick="closeTool('tool-pid')">← Voltar</button>
                 <div id="pid-sim-widget">
                     <div class="pid-grid">
-                        <!-- Painel de parâmetros do controlador e planta -->
                         <div class="panel">
                             <div class="panel-header"><h3>Parâmetros de Malha</h3></div>
                             <div class="panel-body">
-                                <!-- Seleção do modo PID (P, PI, PD, PID) -->
                                 <select id="simMode" class="input-moderno">
                                     <option value="P">Proporcional</option>
                                     <option value="PI">PI</option>
                                     <option value="PD">PD</option>
                                     <option value="PID" selected>PID Completo</option>
                                 </select>
-                                <!-- Sliders para Kp, Ki, Kd -->
                                 <div class="slider-row"><label>Kp <span class="value" id="simKpVal">2.00</span></label><input type="range" id="simKp" min="0" max="20" step="0.1" value="2"></div>
                                 <div class="slider-row" id="simKiRow"><label>Ki <span class="value" id="simKiVal">0.80</span></label><input type="range" id="simKi" min="0" max="10" step="0.05" value="0.8"></div>
                                 <div class="slider-row" id="simKdRow"><label>Kd <span class="value" id="simKdVal">1.20</span></label><input type="range" id="simKd" min="0" max="10" step="0.05" value="1.2"></div>
                                 <hr style="border-color: var(--border); margin:15px 0;">
-                                <!-- Parâmetros da planta (ganho, constante de tempo, atraso) -->
                                 <div class="slider-row"><label>Ganho K <span class="value" id="simKPlantVal">1.00</span></label><input type="range" id="simKPlant" min="0.5" max="3" step="0.05" value="1"></div>
                                 <div class="slider-row"><label>Const. τ <span class="value" id="simTauVal">2.00</span></label><input type="range" id="simTau" min="0.5" max="10" step="0.1" value="2"></div>
                                 <div class="slider-row"><label>Atraso θ <span class="value" id="simThetaVal">0.00</span></label><input type="range" id="simTheta" min="0" max="2" step="0.05" value="0"></div>
@@ -528,17 +348,14 @@
                             </div>
                         </div>
 
-                        <!-- Painel do gráfico de resposta -->
                         <div class="panel">
                             <div class="panel-header"><h3>Resposta Transiente</h3></div>
                             <div style="padding:16px; width:100%;"><canvas id="simCanvas" width="800" height="400" style="width:100%; background:#020617; border-radius:12px; border:1px solid #1e293b; aspect-ratio:2/1;"></canvas></div>
-                            <!-- Legenda explicativa das curvas -->
                             <div style="padding: 0 16px 16px 16px; font-size: 0.8rem; display: flex; flex-direction: column; gap: 8px; color: var(--text-muted); line-height: 1.4;">
                                 <div style="display: flex; align-items: center; gap: 8px;"><span style="display: inline-block; width: 12px; height: 12px; background: #ef4444; border-radius: 3px;"></span> <strong style="color: var(--text-main);">Setpoint (SP):</strong> O valor desejado onde o processo deve chegar (o alvo).</div>
                                 <div style="display: flex; align-items: center; gap: 8px;"><span style="display: inline-block; width: 12px; height: 12px; background: #22c55e; border-radius: 3px;"></span> <strong style="color: var(--text-main);">Variável de Processo (PV):</strong> O comportamento real do sistema medido no tempo.</div>
                                 <div style="display: flex; align-items: center; gap: 8px;"><span style="display: inline-block; width: 14px; border-top: 2px dashed #38bdf8;"></span> <strong style="color: var(--text-main);">Sinal de Controle (MV / Válvula):</strong> A ação corretiva enviada pelo controlador para ajustar o processo.</div>
                             </div>
-                            <!-- Métricas de desempenho (overshoot, tempo de acomodação, estabilidade) -->
                             <div class="metrics">
                                 <div class="metric-card"><div class="metric-title">Overshoot</div><div class="metric-value" id="simOver">0%</div></div>
                                 <div class="metric-card"><div class="metric-title">Acomodação</div><div class="metric-value" id="simSett">0s</div></div>
@@ -549,13 +366,12 @@
                 </div>
             </div>
 
-            <!-- ================= FERRAMENTA: SIMBOLOGIA ISA 5.1 ================= -->
             <div id="tool-isa" style="display: none;">
                 <button class="btn-voltar" onclick="closeTool('tool-isa')">← Voltar</button>
                 <div class="panel">
                     <div class="panel-header"><h3>Dicionário ISA 5.1</h3></div>
                     <div class="panel-body">
-                        <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:15px;">Selecione as letras do TAG do instrumento para identificar a sua função (Ex: PIT).</p>
+                        <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:15px;">Selecione as letras do TAG do instrumento para identificar a sua função.</p>
                         <div class="control-group">
                             <h4>1ª Letra (Variável Medida)</h4>
                             <select id="isaVar" class="input-moderno">
@@ -567,7 +383,17 @@
                                 <option value="S">S - Velocidade / Frequência</option>
                                 <option value="Z">Z - Posição</option>
                             </select>
-                            <h4>Letras Subsequentes (Função)</h4>
+                            
+                            <h4 style="margin-top: 15px;">Letra Modificadora (Opcional)</h4>
+                            <select id="isaMod" class="input-moderno">
+                                <option value="">(Nenhuma)</option>
+                                <option value="D">D - Diferencial</option>
+                                <option value="F">F - Razão / Fração</option>
+                                <option value="Q">Q - Totalização / Integração</option>
+                                <option value="S">S - Segurança</option>
+                            </select>
+
+                            <h4 style="margin-top: 15px;">Letras Subsequentes (Função)</h4>
                             <select id="isaFunc" class="input-moderno">
                                 <option value="I">I - Indicador</option>
                                 <option value="T">T - Transmissor</option>
@@ -578,28 +404,49 @@
                                 <option value="CV">CV - Válvula de Controle</option>
                                 <option value="E">E - Elemento Primário</option>
                                 <option value="A">A - Alarme</option>
+                                <option value="S">S - Chave (Switch)</option>
+                                <option value="SA">SA - Chave de Alarme</option>
+                            </select>
+
+                            <h4 style="margin-top: 15px;">Sufixo de Estado / Alarme (Opcional)</h4>
+                            <select id="isaSuf" class="input-moderno">
+                                <option value="">(Nenhum)</option>
+                                <option value="H">H - Alto (High)</option>
+                                <option value="L">L - Baixo (Low)</option>
+                                <option value="HH">HH - Muito Alto (High High)</option>
+                                <option value="LL">LL - Muito Baixo (Low Low)</option>
                             </select>
                         </div>
-                        <div class="result-box">
-                            <span style="color:var(--text-main); font-size:0.9rem;">Significado do TAG:</span>
-                            <span class="result-val" id="isaResult">Transmissor Indicador de Pressão</span>
+                        <div class="result-box" style="display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 20px;">
+                            <div>
+                                <span style="color:var(--text-muted); font-size:0.8rem; display:block; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">TAG Identificado</span>
+                                <span id="isaTagDisplay" style="background: #020617; color: var(--accent); font-size: 1.8rem; font-weight: 800; padding: 6px 24px; border-radius: 8px; border: 1px solid var(--border); display: inline-block; letter-spacing: 2px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);">---</span>
+                            </div>
+                            <div style="border-top: 1px solid rgba(51, 65, 85, 0.5); width: 100%; padding-top: 12px;">
+                                <span style="color:var(--text-muted); font-size:0.8rem; display:block; text-transform: uppercase; letter-spacing: 0.5px;">Significado Técnico</span>
+                                <span class="result-val" id="isaResult" style="font-size: 1.15rem; margin-top: 4px; color: var(--primary);">---</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- ================= FERRAMENTA: CONVERSOR 4-20mA ================= -->
             <div id="tool-converter" style="display: none;">
                 <button class="btn-voltar" onclick="closeTool('tool-converter')">← Voltar</button>
                 <div class="panel">
                     <div class="panel-header"><h3>Conversor 4-20mA</h3></div>
                     <div class="panel-body">
-                        <!-- LRV (mínimo) e URV (máximo) da faixa de medição -->
+                        <div class="control-group" style="margin-bottom: 15px;">
+                            <label style="font-size:0.85rem;">Modo de Conversão</label>
+                            <select id="cvModo" class="input-moderno">
+                                <option value="linear" selected>Linear (Padrão)</option>
+                                <option value="raiz">Extração de Raiz Quadrada (Vazão por ΔP)</option>
+                            </select>
+                        </div>
                         <div style="display:flex; gap:10px; margin-bottom:15px;">
                             <div style="flex:1;"><label style="font-size:0.8rem;">Mínimo (LRV)</label><input type="number" id="cvMin" value="0" class="input-moderno" inputmode="decimal"></div>
                             <div style="flex:1;"><label style="font-size:0.8rem;">Máximo (URV)</label><input type="number" id="cvMax" value="100" class="input-moderno" inputmode="decimal"></div>
                         </div>
-                        <!-- Campos interligados: corrente, porcentagem e valor da variável de processo -->
                         <label style="font-size:0.85rem;">Corrente Elétrica (mA)</label><input type="number" id="cvMa" placeholder="4 a 20" class="input-moderno" inputmode="decimal" step="any">
                         <label style="font-size:0.85rem;">Porcentagem (%)</label><input type="number" id="cvPct" placeholder="0 a 100" class="input-moderno" inputmode="decimal" step="any">
                         <label style="font-size:0.85rem;">Variável Processo (PV)</label><input type="number" id="cvPv" placeholder="Valor medido" class="input-moderno" inputmode="decimal" step="any">
@@ -607,20 +454,24 @@
                 </div>
             </div>
 
-            <!-- ================= FERRAMENTA: CÁLCULO VÁLVULA (Kv e Cv) ================= -->
             <div id="tool-valve" style="display: none;">
                 <button class="btn-voltar" onclick="closeTool('tool-valve')">← Voltar</button>
                 <div class="panel">
                     <div class="panel-header"><h3>Dimensionamento Válvula (Líquidos)</h3></div>
                     <div class="panel-body">
-                        <label style="font-size:0.85rem;">Vazão (Q) em m³/h</label>
-                        <input type="number" id="vlvQ" value="10" class="input-moderno" inputmode="decimal" step="any">
-                        <div style="display:flex; gap:10px;">
+                        <div style="display:flex; gap:10px; margin-bottom: 10px;">
+                            <div style="flex:1;"><label style="font-size:0.85rem;">Vazão (Q) em m³/h</label><input type="number" id="vlvQ" value="10" class="input-moderno" inputmode="decimal" step="any"></div>
+                            <div style="flex:1;"><label style="font-size:0.85rem;">Viscosidade (cSt)</label><input type="number" id="vlvVisc" value="1" title="Água = 1 cSt" class="input-moderno" inputmode="decimal" step="any"></div>
+                        </div>
+                        <div style="display:flex; gap:10px; margin-bottom: 10px;">
                             <div style="flex:1;"><label style="font-size:0.8rem;">P. Entrada (bar)</label><input type="number" id="vlvP1" value="5" class="input-moderno" inputmode="decimal" step="any"></div>
                             <div style="flex:1;"><label style="font-size:0.8rem;">P. Saída (bar)</label><input type="number" id="vlvP2" value="3" class="input-moderno" inputmode="decimal" step="any"></div>
                         </div>
                         <label style="font-size:0.85rem;">Densidade Relativa (G) - Água = 1</label>
-                        <input type="number" id="vlvG" value="1" class="input-moderno" inputmode="decimal" step="any">
+                        <input type="number" id="vlvG" value="1" class="input-moderno" inputmode="decimal" step="any" style="margin-bottom: 5px;">
+                        
+                        <div id="vlvWarnings" style="display:none; font-size:0.8rem; line-height: 1.4; margin-bottom: 15px; padding: 10px; border-radius: 8px; background: rgba(239, 68, 68, 0.1); border-left: 3px solid var(--danger);"></div>
+
                         <div class="result-box">
                             <div style="display:flex; justify-content:space-around;">
                                 <div><span style="color:var(--text-main); font-size:0.8rem;">Coeficiente Kv</span><span class="result-val" id="resKv">7.07</span></div>
@@ -631,7 +482,6 @@
                 </div>
             </div>
 
-            <!-- ================= FERRAMENTA: CONVERSOR PT100 ================= -->
             <div id="tool-temp" style="display: none;">
                 <button class="btn-voltar" onclick="closeTool('tool-temp')">← Voltar</button>
                 <div class="panel">
@@ -650,7 +500,6 @@
                 </div>
             </div>
 
-            <!-- ================= FERRAMENTA: CONVERSÃO DE UNIDADES ================= -->
             <div id="tool-units" style="display: none;">
                 <button class="btn-voltar" onclick="closeTool('tool-units')">← Voltar</button>
                 <div class="panel">
@@ -661,14 +510,12 @@
                             <option value="temperature">Temperatura</option>
                             <option value="length">Comprimento / Nível</option>
                         </select>
-                        <!-- Caixas de entrada e seleção de unidade (conversão bidirecional) -->
                         <div style="display:flex; gap:10px; margin-bottom:10px;"><input type="number" id="unitInput1" placeholder="0" class="input-moderno" inputmode="decimal" style="flex:2;"><select id="unitSelect1" class="input-moderno" style="flex:1; padding:12px 5px;"></select></div>
                         <div style="display:flex; gap:10px;"><input type="number" id="unitInput2" placeholder="0" class="input-moderno" inputmode="decimal" style="flex:2;"><select id="unitSelect2" class="input-moderno" style="flex:1; padding:12px 5px;"></select></div>
                     </div>
                 </div>
             </div>
 
-            <!-- ================= FERRAMENTA: GUIA REDES INDUSTRIAIS ================= -->
             <div id="tool-protocols" style="display: none;">
                 <button class="btn-voltar" onclick="closeTool('tool-protocols')">← Voltar</button>
                 <div class="panel">
@@ -681,7 +528,6 @@
                 </div>
             </div>
 
-            <!-- ================= FERRAMENTA: PLACA DE ORIFÍCIO ================= -->
             <div id="tool-orifice" style="display: none;">
                 <button class="btn-voltar" onclick="closeTool('tool-orifice')">← Voltar</button>
                 <div class="panel">
@@ -731,7 +577,6 @@
                 </div>
             </div>
 
-            <!-- ================= FERRAMENTA: GUIA DE TERMOPARES ================= -->
             <div id="tool-thermocouples" style="display: none;">
                 <button class="btn-voltar" onclick="closeTool('tool-thermocouples')">← Voltar</button>
                 <div class="panel">
@@ -774,16 +619,76 @@
                     </div>
                 </div>
             </div>
+
+            <div id="tool-pump" style="display: none;">
+                <div style="display: flex; justify-content: center; align-items: center; position: relative; margin-bottom: 15px;">
+                    <button class="btn-voltar" onclick="closeTool('tool-pump')" style="margin-bottom: 0; position: absolute; left: 0;">← Voltar</button>
+                    <h3 style="color: var(--text-main); font-size: 1.1rem; margin: 0;">Bombas Centrífugas</h3>
+                </div>
+
+                <div class="segmented-control">
+                    <button class="segmented-btn active" onclick="togglePumpTab('affinity', this)">Leis de Afinidade</button>
+                    <button class="segmented-btn" onclick="togglePumpTab('npsh', this)">Cálculo de NPSH</button>
+                </div>
+                
+                <div id="pump-panel-affinity" class="panel">
+                    <div class="panel-header" style="display:none;"><h3>Leis de Afinidade</h3></div>
+                    <div class="panel-body">
+                        <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:15px;">Simule o comportamento do processo ao alterar a rotação de uma bomba operada por Inversor de Frequência.</p>
+                        
+                        <div style="display:flex; gap:10px; margin-bottom:10px;">
+                            <div style="flex:1;"><label style="font-size:0.8rem;">Rotação N1 (RPM/Hz)</label><input type="number" id="pumpN1" value="60" class="input-moderno" inputmode="decimal"></div>
+                            <div style="flex:1;"><label style="font-size:0.8rem;">Nova Rot. N2 (RPM/Hz)</label><input type="number" id="pumpN2" value="50" class="input-moderno" inputmode="decimal" style="border-color: var(--accent);"></div>
+                        </div>
+                        <div style="display:flex; gap:10px; margin-bottom:10px;">
+                            <div style="flex:1;"><label style="font-size:0.8rem;">Vazão Inicial (Q1)</label><input type="number" id="pumpQ1" value="100" class="input-moderno" inputmode="decimal"></div>
+                            <div style="flex:1;"><label style="font-size:0.8rem;">Nova Vazão (Q2)</label><div class="input-moderno" style="background:#020617; color:var(--primary); font-weight:bold;" id="pumpQ2">---</div></div>
+                        </div>
+                        <div style="display:flex; gap:10px; margin-bottom:10px;">
+                            <div style="flex:1;"><label style="font-size:0.8rem;">Altura Inicial (H1)</label><input type="number" id="pumpH1" value="50" class="input-moderno" inputmode="decimal"></div>
+                            <div style="flex:1;"><label style="font-size:0.8rem;">Nova Altura (H2)</label><div class="input-moderno" style="background:#020617; color:var(--primary); font-weight:bold;" id="pumpH2">---</div></div>
+                        </div>
+                        <div style="display:flex; gap:10px; margin-bottom:15px;">
+                            <div style="flex:1;"><label style="font-size:0.8rem;">Potência Inicial (P1)</label><input type="number" id="pumpP1" value="10" class="input-moderno" inputmode="decimal"></div>
+                            <div style="flex:1;"><label style="font-size:0.8rem;">Nova Potência (P2)</label><div class="input-moderno" style="background:#020617; color:var(--primary); font-weight:bold;" id="pumpP2">---</div></div>
+                        </div>
+                        <div class="aviso">💡 <strong>Regra de Ouro:</strong> A potência cai ao cubo. Reduzir a rotação em apenas 20% economiza quase 50% de energia elétrica!</div>
+                    </div>
+                </div>
+
+                <div id="pump-panel-npsh" class="panel" style="display: none;">
+                    <div class="panel-header" style="display:none;"><h3>Cálculo de NPSH</h3></div>
+                    <div class="panel-body">
+                        <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:15px;">Verifique a energia do fluido na sucção para prevenção de cavitação.</p>
+                        <label style="font-size:0.85rem;">Tipo de Instalação (Sucção)</label>
+                        <select id="pumpSucType" class="input-moderno" style="margin-bottom:10px;">
+                            <option value="afogada">Afogada / Positiva (Tanque acima da bomba)</option>
+                            <option value="nao_afogada">Não Afogada / Negativa (Tanque abaixo da bomba)</option>
+                        </select>
+                        <div style="display:flex; gap:10px; margin-bottom:10px;">
+                            <div style="flex:1;"><label style="font-size:0.8rem;">P. Atmosférica (mca)</label><input type="number" id="pumpPatm" value="10.33" class="input-moderno" inputmode="decimal" step="any"></div>
+                            <div style="flex:1;"><label style="font-size:0.8rem;">P. Vapor (mca)</label><input type="number" id="pumpPvap" value="0.24" class="input-moderno" inputmode="decimal" step="any"></div>
+                        </div>
+                        <div style="display:flex; gap:10px; margin-bottom:10px;">
+                            <div style="flex:1;"><label style="font-size:0.8rem;">Desnível Sucção (m)</label><input type="number" id="pumpHs" value="2.0" class="input-moderno" inputmode="decimal" step="any"></div>
+                            <div style="flex:1;"><label style="font-size:0.8rem;">Perda Carga (mca)</label><input type="number" id="pumpHf" value="1.5" class="input-moderno" inputmode="decimal" step="any"></div>
+                        </div>
+                        <div class="result-box" style="margin-top: 15px; border-color: var(--border);">
+                            <span style="color:var(--text-muted); font-size:0.85rem; display:block; text-transform:uppercase;">NPSH Disponível ($NPSH_d$)</span>
+                            <span class="result-val" id="pumpNpshResult" style="font-size: 1.8rem; margin: 5px 0;">---</span>
+                            <span id="pumpNpshMsg" style="font-size:0.85rem; margin-top:5px; display:block; color:var(--text-muted); line-height: 1.3;">---</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- ABA 3: VITRINE TÉCNICA (PRODUTOS AFILIADOS) -->
         <div id="tab-store" class="tab-content">
             <h2 class="section-title">Vitrine Técnica</h2>
-            <div class="info-box" style="border-left-color: var(--primary);">
+            <div class="info-box" style="border-left-color: var(--primary); text-align: justify;">
                 <strong>Apoie o projeto:</strong> Os produtos abaixo contêm links de afiliado. Ao comprar através deles, o aplicativo ganha uma pequena comissão sem que você pague nada a mais por isso. A sua compra ajuda a manter o aplicativo 100% gratuito e sem anúncios!
             </div>
             <div class="store-grid">
-                <!-- Cada produto exibe imagem, título, descrição e link de afiliado -->
                 <div class="product-card">
                     <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEixM5VWwwmiYyua4lpqn9VcMcr9L0-yLUK87Zq63DJGD9BADcR3g5sqz0xZUHf5smLOW8WZ1Z8IrmkkBXuclh4HNbxm_4n3ch72vLPvS_dM3OqBXbyuMAgRyrFhr_ZwJe7sLFhsa4bufiGhOU0Q0ljg2osW3GRMbbVyu1unK0U4QcUWKaCL7JFpO8Rc2aLc/s1600/D_NQ_NP_2X_862730-MLB85934797233_062025-F.webp" alt="Multímetro True RMS" class="product-img">
                     <div>
@@ -835,14 +740,12 @@
             </div>
         </div>
 
-        <!-- ABA 4: SOBRE / OPÇÕES -->
         <div id="tab-about" class="tab-content">
             <h2 class="section-title">O Seu Espaço</h2>
             <div class="card"><h3>Sobre a Aplicação</h3><p>Hub oficial do blog <a href="https://www.autoeinstrubr.com.br/" target="_blank">Automação & Instrumentação BR</a> desenhado para estudantes e profissionais.</p></div>
         </div>
     </main>
 
-    <!-- BARRA DE NAVEGAÇÃO INFERIOR (TABS) -->
     <nav class="bottom-nav">
         <button class="nav-item active" onclick="switchTab('feed', this)"><svg viewBox="0 0 24 24"><path d="M20 3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h8v2zm3-4H7v-2h11v2zm0-4H7V7h11v2z"/></svg><span>Artigos</span></button>
         <button class="nav-item" onclick="switchTab('tools', this)"><svg viewBox="0 0 24 24"><path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.1L7 6 4 3 2.6 4.4 5.6 7.4 3.3 9.7c1.3 2.4 3.9 3.1 5.9 1.1 1.9-1.9 2.5-4.5 1.5-6.8L19 12.3c-.3.3-.3.8 0 1.1l1.5 1.5c.3.3.8.3 1.1 0l1.1-1.1c.3-.3.3-.8 0-1.1z"/></svg><span>Ferramentas</span></button>
@@ -851,54 +754,58 @@
     </nav>
 
     <script>
-        // ========================== SISTEMA DE NAVEGAÇÃO ENTRE ABAS ==========================
+        // ========================== SISTEMA DE NAVEGAÇÃO E ABAS ==========================
         function switchTab(tabId, element) {
-            // Oculta todo o conteúdo das abas
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            // Remove a classe 'active' de todos os botões da navegação
             document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
-            // Mostra a aba correspondente e marca o botão como ativo
             document.getElementById('tab-' + tabId).classList.add('active');
             element.classList.add('active');
         }
 
-        // ========================== CONTROLE DE ABERTURA/FECHAMENTO DE FERRAMENTAS ==========================
         function openTool(toolId) {
-            // Esconde o menu principal das ferramentas e exibe a ferramenta específica
             document.getElementById('tools-menu').style.display = 'none';
             document.getElementById(toolId).style.display = 'block';
-            // Se a ferramenta for o PID, dispara um evento de resize para que o canvas se ajuste
             if (toolId === 'tool-pid') window.dispatchEvent(new Event('resize'));
         }
 
         function closeTool(toolId) {
-            // Oculta a ferramenta e mostra novamente o menu de grade
             document.getElementById(toolId).style.display = 'none';
             document.getElementById('tools-menu').style.display = 'block';
         }
 
-        // ========================== FEED DE ARTIGOS DO BLOG (PAGINAÇÃO NATIVA) ==========================
-        let artigoStartIndex = 1;           // índice inicial para paginação (start-index)
-        const artigosPorPagina = 10;         // quantidade de posts por página
+        // ========================== CONTROLE DE ABAS (BOMBAS) ==========================
+        function togglePumpTab(tab, btnElement) {
+            document.getElementById('pump-panel-affinity').style.display = 'none';
+            document.getElementById('pump-panel-npsh').style.display = 'none';
+            const btns = btnElement.parentElement.querySelectorAll('.segmented-btn');
+            btns.forEach(b => b.classList.remove('active'));
+            if (tab === 'affinity') {
+                document.getElementById('pump-panel-affinity').style.display = 'block';
+            } else {
+                document.getElementById('pump-panel-npsh').style.display = 'block';
+            }
+            btnElement.classList.add('active');
+        }
+
+        // ========================== FEED DE ARTIGOS (BLOG) ==========================
+        let artigoStartIndex = 1;
+        const artigosPorPagina = 10;
 
         async function carregarArtigos() {
             const feedContainer = document.getElementById('feed-container');
             const btnPrev = document.getElementById('btnPrev');
             const btnNext = document.getElementById('btnNext');
 
-            // Exibe mensagem de carregamento e esconde os botões momentaneamente
             feedContainer.innerHTML = '<div class="loader">A carregar publicações...</div>';
             if (btnPrev) btnPrev.style.display = 'none';
             if (btnNext) btnNext.style.display = 'none';
 
             try {
-                // URL do feed do Blogger com parâmetros de paginação (max-results e start-index)
                 const urlPaginada = `https://www.autoeinstrubr.com.br/feeds/posts/default?alt=json&max-results=${artigosPorPagina}&start-index=${artigoStartIndex}`;
                 const resposta = await fetch(urlPaginada);
                 if (!resposta.ok) throw new Error(`HTTP ${resposta.status}`);
                 const dados = await resposta.json();
 
-                // Valida se o feed contém os dados esperados
                 if (!dados.feed || !dados.feed.entry) throw new Error('Formato inesperado');
 
                 feedContainer.innerHTML = '';
@@ -910,7 +817,6 @@
                     return;
                 }
 
-                // Percorre cada post e insere o card no HTML
                 artigos.forEach(artigo => {
                     let link = artigo.link.find(l => l.rel === 'alternate').href;
                     let imagem = artigo.media$thumbnail ? artigo.media$thumbnail.url.replace('/s72-c/', '/w600/') : 'https://via.placeholder.com/600x300/1e293b/38bdf8?text=Automação+e+Instrumentação';
@@ -926,7 +832,6 @@
                     `);
                 });
 
-                // Controla exibição dos botões de paginação
                 if (btnPrev) btnPrev.style.display = artigoStartIndex > 1 ? 'block' : 'none';
                 const totalResultados = parseInt(dados.feed.openSearch$totalResults.$t) || 0;
                 if (btnNext) btnNext.style.display = (artigoStartIndex + artigosPorPagina <= totalResultados) ? 'block' : 'none';
@@ -938,7 +843,6 @@
             }
         }
 
-        // Função para avançar ou retroceder a paginação
         function mudarPagina(direcao) {
             if (direcao === 1) {
                 artigoStartIndex += artigosPorPagina;
@@ -946,235 +850,372 @@
                 artigoStartIndex -= artigosPorPagina;
             }
             carregarArtigos();
-            // Rola o main de volta para o topo
             const mainElement = document.querySelector('main');
             if (mainElement) mainElement.scrollTop = 0;
         }
-
-        // Carrega os artigos assim que a página é carregada
         document.addEventListener('DOMContentLoaded', carregarArtigos);
 
-        // ========================== FERRAMENTA ISA 5.1 ==========================
-        const isaVarSelect = document.getElementById('isaVar');
-        const isaFuncSelect = document.getElementById('isaFunc');
-        const isaResultSpan = document.getElementById('isaResult');
+        // ========================== FERRAMENTA ISA 5.1 (Avançada) ==========================
+        (function initISA() {
+            const isaVarSelect = document.getElementById('isaVar');
+            const isaModSelect = document.getElementById('isaMod'); 
+            const isaFuncSelect = document.getElementById('isaFunc');
+            const isaSufSelect = document.getElementById('isaSuf');
+            const isaResultSpan = document.getElementById('isaResult');
+            const isaTagDisplaySpan = document.getElementById('isaTagDisplay'); 
 
-        function atualizarIsa() {
-            const variaveis = { P: 'Pressão', T: 'Temperatura', L: 'Nível', F: 'Vazão', A: 'Análise', S: 'Velocidade', Z: 'Posição' };
-            const funcoes = { I: 'Indicador', T: 'Transmissor', IT: 'Transmissor Indicador', C: 'Controlador', IC: 'Controlador Indicador', V: 'Válvula', CV: 'Válvula de Controle', E: 'Elemento Primário', A: 'Alarme' };
-            isaResultSpan.textContent = `${funcoes[isaFuncSelect.value]} de ${variaveis[isaVarSelect.value]}`;
-        }
-        if (isaVarSelect && isaFuncSelect) {
-            isaVarSelect.addEventListener('change', atualizarIsa);
-            isaFuncSelect.addEventListener('change', atualizarIsa);
-            atualizarIsa();
-        }
+            function atualizarIsa() {
+                const v = isaVarSelect.value;
+                const m = isaModSelect.value;
+                const f = isaFuncSelect.value;
+                const s = isaSufSelect.value;
 
-        // ========================== FERRAMENTA CÁLCULO VÁLVULA (Kv / Cv) ==========================
-        const vazaoInput = document.getElementById('vlvQ');
-        const pressaoEntrada = document.getElementById('vlvP1');
-        const pressaoSaida = document.getElementById('vlvP2');
-        const densidadeRelativa = document.getElementById('vlvG');
-        const kvSpan = document.getElementById('resKv');
-        const cvSpan = document.getElementById('resCv');
+                const variaveis = { P: 'Pressão', T: 'Temperatura', L: 'Nível', F: 'Vazão', A: 'Análise', S: 'Velocidade', Z: 'Posição' };
+                const modificadores = { D: ' Diferencial', F: ' (Razão)', Q: ' Totalizada', S: ' (Segurança)' };
+                const funcoes = { I: 'Indicador', T: 'Transmissor', IT: 'Transmissor Indicador', C: 'Controlador', IC: 'Controlador Indicador', V: 'Válvula', CV: 'Válvula de Controle', E: 'Elemento Primário', A: 'Alarme', S: 'Chave', SA: 'Chave de Alarme' };
+                const sufixos = { H: ' Alto', L: ' Baixo', HH: ' Muito Alto', LL: ' Muito Baixo' };
 
-        function calcularValvula() {
-            let q = +vazaoInput.value;
-            let p1 = +pressaoEntrada.value;
-            let p2 = +pressaoSaida.value;
-            let g = +densidadeRelativa.value;
-            let dp = p1 - p2;
-            if (dp <= 0 || isNaN(q) || isNaN(g) || q <= 0) {
-                kvSpan.textContent = 'inválido';
-                cvSpan.textContent = 'inválido';
-                return;
+                let modTexto = m !== '' ? modificadores[m] : '';
+                let sufTexto = s !== '' ? sufixos[s] : '';
+
+                if (isaTagDisplaySpan) isaTagDisplaySpan.textContent = `${v}${m}${f}${s}`;
+                if (isaResultSpan) isaResultSpan.textContent = `${funcoes[f]} de ${variaveis[v]}${modTexto}${sufTexto}`;
             }
-            let kv = q * Math.sqrt(g / dp);
-            let cv = kv / 0.865;
-            kvSpan.textContent = kv.toFixed(2);
-            cvSpan.textContent = cv.toFixed(2);
-        }
-        if (vazaoInput) {
-            [vazaoInput, pressaoEntrada, pressaoSaida, densidadeRelativa].forEach(el => el.addEventListener('input', calcularValvula));
-            calcularValvula();
-        }
+            
+            if (isaVarSelect && isaFuncSelect) {
+                isaVarSelect.addEventListener('change', atualizarIsa);
+                if (isaModSelect) isaModSelect.addEventListener('change', atualizarIsa);
+                if (isaSufSelect) isaSufSelect.addEventListener('change', atualizarIsa);
+                isaFuncSelect.addEventListener('change', atualizarIsa);
+                atualizarIsa(); 
+            }
+        })();
+
+        // ========================== FERRAMENTA CÁLCULO VÁLVULA (Avançada) ==========================
+        (function initValve() {
+            const vazaoInput = document.getElementById('vlvQ');
+            const pressaoEntrada = document.getElementById('vlvP1');
+            const pressaoSaida = document.getElementById('vlvP2');
+            const densidadeRelativa = document.getElementById('vlvG');
+            const viscosidadeInput = document.getElementById('vlvVisc');
+            const kvSpan = document.getElementById('resKv');
+            const cvSpan = document.getElementById('resCv');
+            const vlvWarnings = document.getElementById('vlvWarnings'); 
+
+            function calcularValvula() {
+                let q = +vazaoInput.value;
+                let p1 = +pressaoEntrada.value;
+                let p2 = +pressaoSaida.value;
+                let g = +densidadeRelativa.value;
+                let visc = +viscosidadeInput.value;
+                let dp = p1 - p2;
+                
+                if (dp <= 0 || isNaN(q) || isNaN(g) || isNaN(visc) || q <= 0 || visc <= 0) {
+                    kvSpan.textContent = 'inválido';
+                    cvSpan.textContent = 'inválido';
+                    vlvWarnings.style.display = 'none';
+                    return;
+                }
+
+                let kv = q * Math.sqrt(g / dp);
+                let cv = kv / 0.865;
+                
+                kvSpan.textContent = kv.toFixed(2);
+                cvSpan.textContent = cv.toFixed(2);
+
+                let alertas = [];
+                if (dp < (0.10 * p1)) {
+                    alertas.push("<strong style='color:var(--danger);'>⚠️ Risco de Superdimensionamento (Oversized):</strong> O ΔP (" + dp.toFixed(2) + " bar) é inferior a 10% da pressão de entrada. A válvula operará quase fechada, resultando em controle instável e desgaste no obturador.");
+                }
+
+                let rev = (35000 * q) / (visc * Math.sqrt(cv));
+                if (rev < 10000) {
+                    alertas.push("<strong style='color:#eab308;'>⚠️ Escoamento Viscoso (Re = " + rev.toFixed(0) + "):</strong> O regime não é totalmente turbulento. O Cv real exigirá a aplicação do fator de correção de viscosidade (Fr).");
+                }
+
+                if (alertas.length > 0) {
+                    vlvWarnings.innerHTML = alertas.join('<br><br>');
+                    vlvWarnings.style.display = 'block';
+                } else {
+                    vlvWarnings.style.display = 'none';
+                }
+            }
+            
+            if (vazaoInput) {
+                [vazaoInput, pressaoEntrada, pressaoSaida, densidadeRelativa, viscosidadeInput].forEach(el => el.addEventListener('input', calcularValvula));
+                calcularValvula();
+            }
+        })();
 
        // ========================== FERRAMENTA PT100 (Callendar-Van Dusen) ==========================
-        const sinalOhms = document.getElementById('thermoSignal');
-        const temperaturaCelsius = document.getElementById('thermoTemp');
+        (function initPT100() {
+            const sinalOhms = document.getElementById('thermoSignal');
+            const temperaturaCelsius = document.getElementById('thermoTemp');
 
-        if (sinalOhms) {
-            // Constantes do padrão IEC 60751 (ITS-90)
-            const R0 = 100.0;
-            const A = 3.9083e-3;
-            const B = -5.775e-7;
-            const C = -4.183e-12;
+            if (sinalOhms) {
+                const R0 = 100.0, A = 3.9083e-3, B = -5.775e-7, C = -4.183e-12;
 
-            function tempParaResistencia(t) {
-                if (t < -200) t = -200;
-                if (t > 850) t = 850;
-
-                if (t >= 0) {
-                    // Equação para T >= 0°C
-                    return (R0 * (1 + A * t + B * t * t)).toFixed(2);
-                } else {
-                    // Equação para T < 0°C
-                    return (R0 * (1 + A * t + B * t * t + C * (t - 100) * Math.pow(t, 3))).toFixed(2);
+                function tempParaResistencia(t) {
+                    if (t < -200) t = -200;
+                    if (t > 850) t = 850;
+                    if (t >= 0) return (R0 * (1 + A * t + B * t * t)).toFixed(2);
+                    else return (R0 * (1 + A * t + B * t * t + C * (t - 100) * Math.pow(t, 3))).toFixed(2);
                 }
-            }
 
-            function resistenciaParaTemp(r) {
-                if (r < 18.52) r = 18.52;   // limite -200°C
-                if (r > 390.48) r = 390.48; // limite 850°C
-
-                if (r >= 100.0) {
-                    // Resolução exata pela fórmula quadrática (Bhaskara) para T >= 0°C
-                    const discriminante = A * A - 4 * B * (1 - r / R0);
-                    const t = (-A + Math.sqrt(discriminante)) / (2 * B);
-                    return t.toFixed(2);
-                } else {
-                    // Resolução iterativa (Método de Newton-Raphson) para T < 0°C
-                    let t = -100; // Chute inicial
-                    for (let i = 0; i < 5; i++) {
-                        let f = R0 * (1 + A * t + B * t * t + C * (t - 100) * Math.pow(t, 3)) - r;
-                        let df = R0 * (A + 2 * B * t - 300 * C * t * t + 4 * C * Math.pow(t, 3));
-                        t = t - f / df;
+                function resistenciaParaTemp(r) {
+                    if (r < 18.52) r = 18.52;   
+                    if (r > 390.48) r = 390.48; 
+                    if (r >= 100.0) {
+                        const discriminante = A * A - 4 * B * (1 - r / R0);
+                        const t = (-A + Math.sqrt(discriminante)) / (2 * B);
+                        return t.toFixed(2);
+                    } else {
+                        let t = -100;
+                        for (let i = 0; i < 5; i++) {
+                            let f = R0 * (1 + A * t + B * t * t + C * (t - 100) * Math.pow(t, 3)) - r;
+                            let df = R0 * (A + 2 * B * t - 300 * C * t * t + 4 * C * Math.pow(t, 3));
+                            t = t - f / df;
+                        }
+                        return t.toFixed(2);
                     }
-                    return t.toFixed(2);
+                }
+
+                sinalOhms.addEventListener('input', () => {
+                    let r = parseFloat(sinalOhms.value);
+                    if (isNaN(r)) { temperaturaCelsius.value = ''; return; }
+                    temperaturaCelsius.value = resistenciaParaTemp(r);
+                });
+
+                temperaturaCelsius.addEventListener('input', () => {
+                    let t = parseFloat(temperaturaCelsius.value);
+                    if (isNaN(t)) { sinalOhms.value = ''; return; }
+                    sinalOhms.value = tempParaResistencia(t);
+                });
+            }
+        })();
+
+        // ========================== FERRAMENTA CONVERSOR 4-20mA (Avançado) ==========================
+        (function init420() {
+            const minLRV = document.getElementById('cvMin');
+            const maxURV = document.getElementById('cvMax');
+            const correnteMa = document.getElementById('cvMa');
+            const porcentagem = document.getElementById('cvPct');
+            const valorPv = document.getElementById('cvPv');
+            const modoCv = document.getElementById('cvModo');
+
+            function obterFaixa() {
+                return { min: +minLRV.value || 0, max: +maxURV.value || 100 };
+            }
+
+            function recalcularPorCorrente() {
+                let ma = +correnteMa.value;
+                if (isNaN(ma)) return;
+                let faixa = obterFaixa();
+                let dpPct = ((ma - 4) / 16) * 100;
+                let outPct = dpPct;
+
+                if (modoCv && modoCv.value === 'raiz') {
+                    if (dpPct < 0) outPct = 0; 
+                    else outPct = Math.sqrt(dpPct / 100) * 100;
+                }
+
+                porcentagem.value = outPct.toFixed(2);
+                valorPv.value = (faixa.min + (outPct / 100) * (faixa.max - faixa.min)).toFixed(2);
+            }
+
+            function recalcularPorPorcentagem() {
+                let outPct = +porcentagem.value;
+                if (isNaN(outPct)) return;
+                let faixa = obterFaixa();
+                let dpPct = outPct;
+
+                if (modoCv && modoCv.value === 'raiz') {
+                    if (outPct < 0) dpPct = 0;
+                    else dpPct = Math.pow(outPct / 100, 2) * 100; 
+                }
+
+                correnteMa.value = (4 + (dpPct / 100) * 16).toFixed(2);
+                valorPv.value = (faixa.min + (outPct / 100) * (faixa.max - faixa.min)).toFixed(2);
+            }
+
+            function recalcularPorPv() {
+                let pv = +valorPv.value;
+                if (isNaN(pv)) return;
+                let faixa = obterFaixa();
+                let span = faixa.max - faixa.min;
+                if (span === 0) return;
+                
+                let outPct = ((pv - faixa.min) / span) * 100;
+                let dpPct = outPct;
+
+                if (modoCv && modoCv.value === 'raiz') {
+                    if (outPct < 0) dpPct = 0;
+                    else dpPct = Math.pow(outPct / 100, 2) * 100;
+                }
+
+                porcentagem.value = outPct.toFixed(2);
+                correnteMa.value = (4 + (dpPct / 100) * 16).toFixed(2);
+            }
+
+            if (correnteMa) {
+                correnteMa.addEventListener('input', recalcularPorCorrente);
+                porcentagem.addEventListener('input', recalcularPorPorcentagem);
+                valorPv.addEventListener('input', recalcularPorPv);
+                
+                const atualizarCompleto = () => {
+                    if (document.activeElement === correnteMa || (correnteMa.value !== '' && document.activeElement !== porcentagem && document.activeElement !== valorPv)) {
+                        recalcularPorCorrente();
+                    } else if (document.activeElement === porcentagem) {
+                        recalcularPorPorcentagem();
+                    } else if (document.activeElement === valorPv) {
+                        recalcularPorPv();
+                    } else if (correnteMa.value !== '') {
+                        recalcularPorCorrente(); 
+                    }
+                };
+
+                minLRV.addEventListener('input', atualizarCompleto);
+                maxURV.addEventListener('input', atualizarCompleto);
+                if (modoCv) modoCv.addEventListener('change', atualizarCompleto); 
+            }
+        })();
+
+        // ========================== FERRAMENTA BOMBAS CENTRÍFUGAS ==========================
+        (function initPumpCalculator() {
+            const n1 = document.getElementById('pumpN1');
+            const n2 = document.getElementById('pumpN2');
+            const q1 = document.getElementById('pumpQ1');
+            const h1 = document.getElementById('pumpH1');
+            const p1 = document.getElementById('pumpP1');
+            const resQ2 = document.getElementById('pumpQ2');
+            const resH2 = document.getElementById('pumpH2');
+            const resP2 = document.getElementById('pumpP2');
+
+            const sucType = document.getElementById('pumpSucType');
+            const patm = document.getElementById('pumpPatm');
+            const pvap = document.getElementById('pumpPvap');
+            const hs = document.getElementById('pumpHs');
+            const hf = document.getElementById('pumpHf');
+            const resNpsh = document.getElementById('pumpNpshResult');
+            const msgNpsh = document.getElementById('pumpNpshMsg');
+
+            if(!n1 || !patm) return;
+
+            function calcAffinity() {
+                const valN1 = parseFloat(n1.value);
+                const valN2 = parseFloat(n2.value);
+                const valQ1 = parseFloat(q1.value);
+                const valH1 = parseFloat(h1.value);
+                const valP1 = parseFloat(p1.value);
+
+                if (isNaN(valN1) || isNaN(valN2) || valN1 === 0) {
+                    resQ2.textContent = '---'; resH2.textContent = '---'; resP2.textContent = '---'; return;
+                }
+                const ratio = valN2 / valN1;
+                if (!isNaN(valQ1)) resQ2.textContent = (valQ1 * ratio).toFixed(2);
+                if (!isNaN(valH1)) resH2.textContent = (valH1 * Math.pow(ratio, 2)).toFixed(2);
+                if (!isNaN(valP1)) resP2.textContent = (valP1 * Math.pow(ratio, 3)).toFixed(2);
+            }
+
+            function calcNPSH() {
+                const type = sucType.value;
+                const valPatm = parseFloat(patm.value);
+                const valPvap = parseFloat(pvap.value);
+                const valHs = parseFloat(hs.value);
+                const valHf = parseFloat(hf.value);
+
+                if (isNaN(valPatm) || isNaN(valPvap) || isNaN(valHs) || isNaN(valHf)) {
+                    resNpsh.textContent = '---';
+                    msgNpsh.textContent = 'Preencha todos os campos para verificar a cavitação.';
+                    return;
+                }
+
+                let npshd = (type === 'afogada') ? valPatm - valPvap + valHs - valHf : valPatm - valPvap - valHs - valHf;
+                resNpsh.textContent = npshd.toFixed(2) + ' mca';
+
+                if (npshd < 2) {
+                    resNpsh.style.color = 'var(--danger)';
+                    msgNpsh.textContent = '⚠️ Risco CRÍTICO de cavitação. O NPSH Disponível é perigosamente baixo.';
+                    msgNpsh.style.color = 'var(--danger)';
+                } else if (npshd < 5) {
+                    resNpsh.style.color = '#eab308'; 
+                    msgNpsh.textContent = 'Atenção: O NPSH Requerido (NPSHr) da bomba no catálogo deve ser estritamente menor que este valor.';
+                    msgNpsh.style.color = '#eab308';
+                } else {
+                    resNpsh.style.color = 'var(--primary)';
+                    msgNpsh.textContent = '✅ NPSH favorável. Garanta apenas que o NPSHr de catálogo seja inferior a este cálculo.';
+                    msgNpsh.style.color = 'var(--text-muted)';
                 }
             }
 
-            sinalOhms.addEventListener('input', () => {
-                let r = parseFloat(sinalOhms.value);
-                if (isNaN(r)) { temperaturaCelsius.value = ''; return; }
-                temperaturaCelsius.value = resistenciaParaTemp(r);
+            [n1, n2, q1, h1, p1].forEach(el => el.addEventListener('input', calcAffinity));
+            [sucType, patm, pvap, hs, hf].forEach(el => {
+                if (el.tagName === 'SELECT') el.addEventListener('change', calcNPSH);
+                else el.addEventListener('input', calcNPSH);
             });
 
-            temperaturaCelsius.addEventListener('input', () => {
-                let t = parseFloat(temperaturaCelsius.value);
-                if (isNaN(t)) { sinalOhms.value = ''; return; }
-                sinalOhms.value = tempParaResistencia(t);
-            });
-        }
-
-        // ========================== FERRAMENTA CONVERSOR 4-20mA ==========================
-        const minLRV = document.getElementById('cvMin');
-        const maxURV = document.getElementById('cvMax');
-        const correnteMa = document.getElementById('cvMa');
-        const porcentagem = document.getElementById('cvPct');
-        const valorPv = document.getElementById('cvPv');
-
-        function obterFaixa() {
-            return { min: +minLRV.value || 0, max: +maxURV.value || 100 };
-        }
-
-        function recalcularPorCorrente() {
-            let ma = +correnteMa.value;
-            if (isNaN(ma)) return;
-            let faixa = obterFaixa();
-            let pct = ((ma - 4) / 16) * 100;
-            porcentagem.value = pct.toFixed(2);
-            valorPv.value = (faixa.min + (pct / 100) * (faixa.max - faixa.min)).toFixed(2);
-        }
-
-        function recalcularPorPorcentagem() {
-            let pct = +porcentagem.value;
-            if (isNaN(pct)) return;
-            let faixa = obterFaixa();
-            correnteMa.value = (4 + (pct / 100) * 16).toFixed(2);
-            valorPv.value = (faixa.min + (pct / 100) * (faixa.max - faixa.min)).toFixed(2);
-        }
-
-        function recalcularPorPv() {
-            let pv = +valorPv.value;
-            if (isNaN(pv)) return;
-            let faixa = obterFaixa();
-            let span = faixa.max - faixa.min;
-            if (span === 0) return;
-            let pct = ((pv - faixa.min) / span) * 100;
-            porcentagem.value = pct.toFixed(2);
-            correnteMa.value = (4 + (pct / 100) * 16).toFixed(2);
-        }
-
-        if (correnteMa) {
-            correnteMa.addEventListener('input', recalcularPorCorrente);
-            porcentagem.addEventListener('input', recalcularPorPorcentagem);
-            valorPv.addEventListener('input', recalcularPorPv);
-            const atualizarPorMudancaFaixa = () => {
-                if (correnteMa.value !== '' && !isNaN(parseFloat(correnteMa.value))) {
-                    recalcularPorCorrente();
-                } else if (porcentagem.value !== '' && !isNaN(parseFloat(porcentagem.value))) {
-                    recalcularPorPorcentagem();
-                } else if (valorPv.value !== '' && !isNaN(parseFloat(valorPv.value))) {
-                    recalcularPorPv();
-                }
-            };
-            minLRV.addEventListener('input', atualizarPorMudancaFaixa);
-            maxURV.addEventListener('input', atualizarPorMudancaFaixa);
-        }
+            calcAffinity();
+            calcNPSH();
+        })();
 
         // ========================== FERRAMENTA CONVERSÃO DE UNIDADES ==========================
-        const categoriaUnidade = document.getElementById('unitCategory');
-        const entradaUnidade1 = document.getElementById('unitInput1');
-        const selecaoUnidade1 = document.getElementById('unitSelect1');
-        const entradaUnidade2 = document.getElementById('unitInput2');
-        const selecaoUnidade2 = document.getElementById('unitSelect2');
+        (function initUnits() {
+            const categoriaUnidade = document.getElementById('unitCategory');
+            const entradaUnidade1 = document.getElementById('unitInput1');
+            const selecaoUnidade1 = document.getElementById('unitSelect1');
+            const entradaUnidade2 = document.getElementById('unitInput2');
+            const selecaoUnidade2 = document.getElementById('unitSelect2');
 
-        const mapUnidades = {
-            pressure: { 'bar': 1, 'psi': 14.5038, 'kPa': 100, 'kgf/cm²': 1.0197 },
-            length: { 'metro': 1, 'milímetro': 1000, 'polegada': 39.37 }
-        };
+            const mapUnidades = {
+                pressure: { 'bar': 1, 'psi': 14.5038, 'kPa': 100, 'kgf/cm²': 1.0197 },
+                length: { 'metro': 1, 'milímetro': 1000, 'polegada': 39.37 }
+            };
 
-        function popularUnidades() {
-            let cat = categoriaUnidade.value;
-            selecaoUnidade1.innerHTML = '';
-            selecaoUnidade2.innerHTML = '';
-            let opcoes = cat === 'temperature' ? ['Celsius', 'Fahrenheit', 'Kelvin'] : Object.keys(mapUnidades[cat]);
-            opcoes.forEach(opt => {
-                selecaoUnidade1.add(new Option(opt, opt));
-                selecaoUnidade2.add(new Option(opt, opt));
-            });
-            if (opcoes.length > 1) selecaoUnidade2.selectedIndex = 1;
-            converterUnidade(1);
-        }
+            function popularUnidades() {
+                let cat = categoriaUnidade.value;
+                selecaoUnidade1.innerHTML = '';
+                selecaoUnidade2.innerHTML = '';
+                let opcoes = cat === 'temperature' ? ['Celsius', 'Fahrenheit', 'Kelvin'] : Object.keys(mapUnidades[cat]);
+                opcoes.forEach(opt => {
+                    selecaoUnidade1.add(new Option(opt, opt));
+                    selecaoUnidade2.add(new Option(opt, opt));
+                });
+                if (opcoes.length > 1) selecaoUnidade2.selectedIndex = 1;
+                converterUnidade(1);
+            }
 
-        function converterTemperatura(valor, de, para) {
-            let celsius = de === 'Celsius' ? valor : de === 'Fahrenheit' ? (valor - 32) / 1.8 : valor - 273.15;
-            if (para === 'Celsius') return celsius;
-            if (para === 'Fahrenheit') return celsius * 1.8 + 32;
-            return celsius + 273.15;
-        }
+            function converterTemperatura(valor, de, para) {
+                let celsius = de === 'Celsius' ? valor : de === 'Fahrenheit' ? (valor - 32) / 1.8 : valor - 273.15;
+                if (para === 'Celsius') return celsius;
+                if (para === 'Fahrenheit') return celsius * 1.8 + 32;
+                return celsius + 273.15;
+            }
 
-        function converterUnidade(sentido) {
-            let cat = categoriaUnidade.value;
-            let v1 = +entradaUnidade1.value;
-            let v2 = +entradaUnidade2.value;
-            let u1 = selecaoUnidade1.value;
-            let u2 = selecaoUnidade2.value;
-            if (sentido === 1) {
-                if (isNaN(v1)) return;
-                if (cat === 'temperature') {
-                    entradaUnidade2.value = converterTemperatura(v1, u1, u2).toFixed(2);
+            function converterUnidade(sentido) {
+                let cat = categoriaUnidade.value;
+                let v1 = +entradaUnidade1.value;
+                let v2 = +entradaUnidade2.value;
+                let u1 = selecaoUnidade1.value;
+                let u2 = selecaoUnidade2.value;
+                if (sentido === 1) {
+                    if (isNaN(v1)) return;
+                    if (cat === 'temperature') entradaUnidade2.value = converterTemperatura(v1, u1, u2).toFixed(2);
+                    else entradaUnidade2.value = ((v1 / mapUnidades[cat][u1]) * mapUnidades[cat][u2]).toFixed(4).replace(/\.?0+$/, '');
                 } else {
-                    entradaUnidade2.value = ((v1 / mapUnidades[cat][u1]) * mapUnidades[cat][u2]).toFixed(4).replace(/\.?0+$/, '');
-                }
-            } else {
-                if (isNaN(v2)) return;
-                if (cat === 'temperature') {
-                    entradaUnidade1.value = converterTemperatura(v2, u2, u1).toFixed(2);
-                } else {
-                    entradaUnidade1.value = ((v2 / mapUnidades[cat][u2]) * mapUnidades[cat][u1]).toFixed(4).replace(/\.?0+$/, '');
+                    if (isNaN(v2)) return;
+                    if (cat === 'temperature') entradaUnidade1.value = converterTemperatura(v2, u2, u1).toFixed(2);
+                    else entradaUnidade1.value = ((v2 / mapUnidades[cat][u2]) * mapUnidades[cat][u1]).toFixed(4).replace(/\.?0+$/, '');
                 }
             }
-        }
 
-        if (categoriaUnidade) {
-            categoriaUnidade.addEventListener('change', popularUnidades);
-            [selecaoUnidade1, selecaoUnidade2].forEach(el => el.addEventListener('change', () => converterUnidade(1)));
-            entradaUnidade1.addEventListener('input', () => converterUnidade(1));
-            entradaUnidade2.addEventListener('input', () => converterUnidade(2));
-            popularUnidades();
-        }
+            if (categoriaUnidade) {
+                categoriaUnidade.addEventListener('change', popularUnidades);
+                [selecaoUnidade1, selecaoUnidade2].forEach(el => el.addEventListener('change', () => converterUnidade(1)));
+                entradaUnidade1.addEventListener('input', () => converterUnidade(1));
+                entradaUnidade2.addEventListener('input', () => converterUnidade(2));
+                popularUnidades();
+            }
+        })();
 
         // ========================== FERRAMENTA PLACA DE ORIFÍCIO ==========================
         (function initOrifice() {
@@ -1194,11 +1235,10 @@
             const flowMassSpan = document.getElementById('orificeFlowMass');
             const velSpan = document.getElementById('orificeVelocity');
 
-            // Cálculo da densidade do vapor (gás ideal)
             function vaporDensity(P_bar_abs, T_Celsius) {
                 const P_Pa = P_bar_abs * 1e5;
                 const T_K = T_Celsius + 273.15;
-                const R = 461.5; // constante específica do vapor d'água [J/(kg·K)]
+                const R = 461.5; 
                 if (T_K <= 0) return 0.6;
                 return P_Pa / (R * T_K);
             }
@@ -1230,11 +1270,8 @@
                 let rho = parseFloat(densityInput.value);
 
                 if (isNaN(D_mm) || isNaN(d_mm) || isNaN(dp_mbar) || isNaN(rho) || D_mm <= 0 || d_mm <= 0 || dp_mbar <= 0 || rho <= 0) {
-                    betaSpan.textContent = '---';
-                    cSpan.textContent = '---';
-                    flowVolSpan.textContent = 'inválido';
-                    flowMassSpan.textContent = 'inválido';
-                    velSpan.textContent = 'inválido';
+                    betaSpan.textContent = '---'; cSpan.textContent = '---';
+                    flowVolSpan.textContent = 'inválido'; flowMassSpan.textContent = 'inválido'; velSpan.textContent = 'inválido';
                     betaWarning.style.display = 'none';
                     return;
                 }
@@ -1244,7 +1281,7 @@
                 let dp_Pa = dp_mbar * 100;
                 let beta = d / D;
                 let A0 = Math.PI * d * d / 4;
-                let C = 0.602 + 0.025 * Math.pow(beta, 2.5);   // Coeficiente de descarga aproximado
+                let C = 0.602 + 0.025 * Math.pow(beta, 2.5);   
                 let E = 1 / Math.sqrt(1 - Math.pow(beta, 4));
                 let m_dot = C * E * A0 * Math.sqrt(2 * rho * dp_Pa);
 
@@ -1259,10 +1296,7 @@
                 }
 
                 if (isNaN(m_dot) || m_dot < 0 || beta >= 1) {
-                    flowVolSpan.textContent = 'erro';
-                    flowMassSpan.textContent = 'erro';
-                    velSpan.textContent = 'erro';
-                    return;
+                    flowVolSpan.textContent = 'erro'; flowMassSpan.textContent = 'erro'; velSpan.textContent = 'erro'; return;
                 }
 
                 let m_dot_kg_h = m_dot * 3600;
@@ -1298,78 +1332,30 @@
             if (!tcSelect) return;
 
             const termopares = {
-                J: {
-                    comp: "Ferro (+) / Constanta (Cobre-Níquel) (-)",
-                    range: "-40°C a 750°C",
-                    notes: "Indicado para uso em ambientes de vácuo, redutores, oxidantes ou inertes. Não recomendado em temperaturas acima de 750°C devido à rápida oxidação do elemento de ferro. Evitar alta umidade.",
-                    cPos: "Branco", cPosBg: "#ffffff", cPosFg: "#000000", cJack: "Preto", cJackBg: "#000000", cJackFg: "#ffffff"
-                },
-                K: {
-                    comp: "Cromel (Níquel-Cromo) (+) / Alumel (Níquel-Alumínio) (-)",
-                    range: "-200°C a 1250°C",
-                    notes: "O termopar de uso geral mais utilizado na indústria devido à sua alta resistência à oxidação em temperaturas elevadas. Deve ser evitado em atmosferas redutoras ou sob o efeito de 'green rot'.",
-                    cPos: "Amarelo", cPosBg: "#fef08a", cPosFg: "#713f12", cJack: "Amarelo", cJackBg: "#fef08a", cJackFg: "#713f12"
-                },
-                T: {
-                    comp: "Cobre (+) / Constanta (Cobre-Níquel) (-)",
-                    range: "-200°C a 350°C",
-                    notes: "Excelente estabilidade e alta precisão em temperaturas abaixo de zero (criogenia). Não deve ser exposto a temperaturas acima de 350°C.",
-                    cPos: "Azul", cPosBg: "#3b82f6", cPosFg: "#ffffff", cJack: "Azul", cJackBg: "#3b82f6", cJackFg: "#ffffff"
-                },
-                E: {
-                    comp: "Cromel (Níquel-Cromo) (+) / Constanta (Cobre-Níquel) (-)",
-                    range: "-40°C a 900°C",
-                    notes: "Possui o maior coeficiente de Seebeck da indústria (maior sinal por °C). Recomendado para variações sutis de temperatura.",
-                    cPos: "Roxo", cPosBg: "#c084fc", cPosFg: "#ffffff", cJack: "Roxo", cJackBg: "#c084fc", cJackFg: "#ffffff"
-                },
-                N: {
-                    comp: "Nicrosil (Níquel-Cromo-Silício) (+) / Nisil (Níquel-Silício) (-)",
-                    range: "-270°C a 1300°C",
-                    notes: "Evolução do Tipo K. Oferece resistência extraordinária contra oxidação em altas temperaturas e estabilidade superior.",
-                    cPos: "Laranja", cPosBg: "#fb923c", cPosFg: "#ffffff", cJack: "Laranja", cJackBg: "#fb923c", cJackFg: "#ffffff"
-                },
-                S: {
-                    comp: "Platina Ródio 10% (+) / Platina Pura (-)",
-                    range: "0°C a 1600°C",
-                    notes: "Termopar nobre de alta precisão. Vulnerável à contaminação em ambientes redutores.",
-                    cPos: "Preto", cPosBg: "#000000", cPosFg: "#ffffff", cJack: "Verde", cJackBg: "#22c55e", cJackFg: "#000000"
-                },
-                R: {
-                    comp: "Platina Ródio 13% (+) / Platina Pura (-)",
-                    range: "0°C a 1600°C",
-                    notes: "Similar ao Tipo S, com sinal ligeiramente superior. Segue as mesmas restrições contra contaminação.",
-                    cPos: "Preto", cPosBg: "#000000", cPosFg: "#ffffff", cJack: "Verde", cJackBg: "#22c55e", cJackFg: "#000000"
-                },
-                B: {
-                    comp: "Platina Ródio 30% (+) / Platina Ródio 6% (-)",
-                    range: "600°C a 1700°C",
-                    notes: "Ideal para medições extremas. Não necessita de cabos de compensação especiais devido ao sinal desprezível à temperatura ambiente.",
-                    cPos: "Cinza", cPosBg: "#94a3b8", cPosFg: "#0f172a", cJack: "Cinza", cJackBg: "#94a3b8", cJackFg: "#0f172a"
-                }
+                J: { comp: "Ferro (+) / Constanta (-)", range: "-40°C a 750°C", notes: "Não recomendado acima de 750°C devido à rápida oxidação do ferro.", cPos: "Branco", cPosBg: "#ffffff", cPosFg: "#000000", cJack: "Preto", cJackBg: "#000000", cJackFg: "#ffffff" },
+                K: { comp: "Cromel (+) / Alumel (-)", range: "-200°C a 1250°C", notes: "Uso geral. Evitar atmosferas redutoras.", cPos: "Amarelo", cPosBg: "#fef08a", cPosFg: "#713f12", cJack: "Amarelo", cJackBg: "#fef08a", cJackFg: "#713f12" },
+                T: { comp: "Cobre (+) / Constanta (-)", range: "-200°C a 350°C", notes: "Excelente para criogenia. Não usar acima de 350°C.", cPos: "Azul", cPosBg: "#3b82f6", cPosFg: "#ffffff", cJack: "Azul", cJackBg: "#3b82f6", cJackFg: "#ffffff" },
+                E: { comp: "Cromel (+) / Constanta (-)", range: "-40°C a 900°C", notes: "Maior coeficiente de Seebeck (maior sinal por °C).", cPos: "Roxo", cPosBg: "#c084fc", cPosFg: "#ffffff", cJack: "Roxo", cJackBg: "#c084fc", cJackFg: "#ffffff" },
+                N: { comp: "Nicrosil (+) / Nisil (-)", range: "-270°C a 1300°C", notes: "Evolução do K. Alta resistência contra oxidação.", cPos: "Laranja", cPosBg: "#fb923c", cPosFg: "#ffffff", cJack: "Laranja", cJackBg: "#fb923c", cJackFg: "#ffffff" },
+                S: { comp: "Platina Ródio 10% (+) / Platina Pura (-)", range: "0°C a 1600°C", notes: "Alta precisão. Vulnerável à contaminação em ambientes redutores.", cPos: "Preto", cPosBg: "#000000", cPosFg: "#ffffff", cJack: "Verde", cJackBg: "#22c55e", cJackFg: "#000000" },
+                R: { comp: "Platina Ródio 13% (+) / Platina Pura (-)", range: "0°C a 1600°C", notes: "Similar ao S, com sinal ligeiramente superior.", cPos: "Preto", cPosBg: "#000000", cPosFg: "#ffffff", cJack: "Verde", cJackBg: "#22c55e", cJackFg: "#000000" },
+                B: { comp: "Platina Ródio 30% (+) / Platina Ródio 6% (-)", range: "600°C a 1700°C", notes: "Medições extremas. Não necessita cabo de compensação até 50°C.", cPos: "Cinza", cPosBg: "#94a3b8", cPosFg: "#0f172a", cJack: "Cinza", cJackBg: "#94a3b8", cJackFg: "#0f172a" }
             };
 
             function atualizarTermopar() {
-                const tipo = tcSelect.value;
-                const info = termopares[tipo];
+                const info = termopares[tcSelect.value];
                 if (!info) return;
-
                 document.getElementById('tcComposition').textContent = info.comp;
                 document.getElementById('tcRange').textContent = info.range;
                 document.getElementById('tcNotes').textContent = info.notes;
-
+                
                 const posEl = document.getElementById('tcColorPos');
-                posEl.textContent = info.cPos;
-                posEl.style.backgroundColor = info.cPosBg;
-                posEl.style.color = info.cPosFg;
-
+                posEl.textContent = info.cPos; posEl.style.backgroundColor = info.cPosBg; posEl.style.color = info.cPosFg;
                 const jackEl = document.getElementById('tcColorJack');
-                jackEl.textContent = info.cJack;
-                jackEl.style.backgroundColor = info.cJackBg;
-                jackEl.style.color = info.cJackFg;
+                jackEl.textContent = info.cJack; jackEl.style.backgroundColor = info.cJackBg; jackEl.style.color = info.cJackFg;
             }
-
             tcSelect.addEventListener('change', atualizarTermopar);
-            atualizarTermopar(); // carrega dados do Tipo K (padrão)
+            atualizarTermopar();
         })();
 
         // ========================== SIMULADOR PID COMPLETO ==========================
@@ -1379,15 +1365,12 @@
             if (!canvas) return;
             let ctx = canvas.getContext('2d');
 
-            // Ajusta o canvas para responsividade (largura proporcional)
             function resizeCanvas() {
                 const container = canvas.parentElement;
-                const width = container.clientWidth - 32; // compensa padding do container
+                const width = container.clientWidth - 32; 
                 if (width > 0) {
-                    canvas.width = width;
-                    canvas.height = width / 2;
-                    canvas.style.width = `${width}px`;
-                    canvas.style.height = `${width / 2}px`;
+                    canvas.width = width; canvas.height = width / 2;
+                    canvas.style.width = `${width}px`; canvas.style.height = `${width / 2}px`;
                     ctx = canvas.getContext('2d');
                     executarSimulacao(false);
                 }
@@ -1407,34 +1390,22 @@
             const modeSelect = document.getElementById('simMode');
             let animationFrameId = null;
 
-            // Atualiza a interface de acordo com o modo PID selecionado (habilita/desabilita Ki/Kd)
             function atualizarInterfaceModo() {
                 const modo = modeSelect.value;
                 const kiRow = document.getElementById('simKiRow');
                 const kdRow = document.getElementById('simKdRow');
-                if (kiRow) {
-                    kiRow.style.opacity = (modo === 'P' || modo === 'PD') ? '0.4' : '1';
-                    kiRow.style.pointerEvents = (modo === 'P' || modo === 'PD') ? 'none' : 'auto';
-                }
-                if (kdRow) {
-                    kdRow.style.opacity = (modo === 'P' || modo === 'PI') ? '0.4' : '1';
-                    kdRow.style.pointerEvents = (modo === 'P' || modo === 'PI') ? 'none' : 'auto';
-                }
+                if (kiRow) { kiRow.style.opacity = (modo === 'P' || modo === 'PD') ? '0.4' : '1'; kiRow.style.pointerEvents = (modo === 'P' || modo === 'PD') ? 'none' : 'auto'; }
+                if (kdRow) { kdRow.style.opacity = (modo === 'P' || modo === 'PI') ? '0.4' : '1'; kdRow.style.pointerEvents = (modo === 'P' || modo === 'PI') ? 'none' : 'auto'; }
             }
 
-            // Executa a simulação (animada ou estática)
             function executarSimulacao(animar = false) {
                 if (animationFrameId) cancelAnimationFrame(animationFrameId);
                 const modo = modeSelect.value;
                 let kp = +inputs.kp.value;
                 let ki = (modo === 'P' || modo === 'PD') ? 0 : +inputs.ki.value;
                 let kd = (modo === 'P' || modo === 'PI') ? 0 : +inputs.kd.value;
-                const K = +inputs.kPlant.value;
-                const tau = +inputs.tau.value;
-                const theta = +inputs.theta.value;
-                const setpoint = +inputs.sp.value;
+                const K = +inputs.kPlant.value, tau = +inputs.tau.value, theta = +inputs.theta.value, setpoint = +inputs.sp.value;
 
-                // Atualiza valores mostrados nos sliders
                 Object.keys(inputs).forEach(k => { if (displays[k]) displays[k].textContent = (+inputs[k].value).toFixed(2); });
 
                 let y = 0, integral = 0, y_prev = 0;
@@ -1454,36 +1425,26 @@
                     bufferIndex = (bufferIndex + 1) % (atrasoSamples + 1);
                     y += ((K * uAtrasado - y) / tau) * dt;
                     y_prev = y;
-                    dadosPV.push({ t, y });
-                    dadosSP.push({ t, y: setpoint });
-                    dadosMV.push({ t, y: u });
+                    dadosPV.push({ t, y }); dadosSP.push({ t, y: setpoint }); dadosMV.push({ t, y: u });
                     if (y > maxPV) maxPV = y;
                     if (Math.abs(u) > maxMV) maxMV = Math.abs(u);
                 }
 
-                let maxValor = Math.max(maxPV, setpoint, maxMV * 0.8);
-                if (maxValor === 0) maxValor = 1;
+                let maxValor = Math.max(maxPV, setpoint, maxMV * 0.8) || 1;
 
-                // Função para desenhar um segmento de dados no canvas
                 function desenharCurva(dados, cor, largura, tracejado = []) {
-                    ctx.beginPath();
-                    ctx.strokeStyle = cor;
-                    ctx.lineWidth = largura;
-                    ctx.setLineDash(tracejado);
+                    ctx.beginPath(); ctx.strokeStyle = cor; ctx.lineWidth = largura; ctx.setLineDash(tracejado);
                     dados.forEach((ponto, idx) => {
                         let x = 40 + (ponto.t / totalTime) * (canvas.width - 80);
                         let v = Math.min(Math.max(ponto.y, -maxValor * 1.2), maxValor * 1.2);
                         let yCanvas = canvas.height - 40 - (v / (maxValor * 1.2)) * (canvas.height - 80);
-                        if (idx === 0) ctx.moveTo(x, yCanvas);
-                        else ctx.lineTo(x, yCanvas);
+                        if (idx === 0) ctx.moveTo(x, yCanvas); else ctx.lineTo(x, yCanvas);
                     });
                     ctx.stroke();
                 }
 
                 function desenharGrade() {
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    ctx.strokeStyle = '#334155';
-                    ctx.lineWidth = 1;
+                    ctx.clearRect(0, 0, canvas.width, canvas.height); ctx.strokeStyle = '#334155'; ctx.lineWidth = 1;
                     for (let i = 0; i <= 10; i++) {
                         let yPos = 40 + ((canvas.height - 80) / 10) * i;
                         let xPos = 40 + ((canvas.width - 80) / 10) * i;
@@ -1493,8 +1454,7 @@
                 }
 
                 function desenharLegendasEixos() {
-                    ctx.fillStyle = '#94a3b8';
-                    ctx.font = '14px Inter';
+                    ctx.fillStyle = '#94a3b8'; ctx.font = '14px Inter';
                     for (let i = 0; i <= 10; i++) {
                         let xTick = 40 + ((canvas.width - 80) / 10) * i;
                         ctx.fillText((totalTime / 10 * i).toFixed(0) + 's', xTick - 10, canvas.height - 15);
@@ -1506,9 +1466,7 @@
                     let ultimoInstavel = 0;
                     dadosPV.forEach(p => { if (Math.abs(p.y - setpoint) > 0.02 * setpoint) ultimoInstavel = p.t; });
                     const tempoAcomodacao = (Math.abs(dadosPV[dadosPV.length - 1].y - setpoint) > 0.02 * setpoint || ultimoInstavel >= totalTime - dt) ? null : ultimoInstavel;
-                    const simOver = document.getElementById('simOver');
-                    const simSett = document.getElementById('simSett');
-                    const simStab = document.getElementById('simStab');
+                    const simOver = document.getElementById('simOver'), simSett = document.getElementById('simSett'), simStab = document.getElementById('simStab');
                     if (simOver) simOver.textContent = overshoot.toFixed(1) + '%';
                     if (simSett) simSett.textContent = tempoAcomodacao ? tempoAcomodacao.toFixed(2) + 's' : '---';
                     if (simStab) {
@@ -1519,25 +1477,14 @@
                 }
 
                 if (!animar) {
-                    desenharGrade();
-                    desenharCurva(dadosSP, '#ef4444', 2);
-                    desenharCurva(dadosMV, '#38bdf8', 2, [5, 5]);
-                    desenharCurva(dadosPV, '#22c55e', 3);
-                    ctx.setLineDash([]);
-                    desenharLegendasEixos();
-                    calcularMetricas();
+                    desenharGrade(); desenharCurva(dadosSP, '#ef4444', 2); desenharCurva(dadosMV, '#38bdf8', 2, [5, 5]); desenharCurva(dadosPV, '#22c55e', 3); ctx.setLineDash([]); desenharLegendasEixos(); calcularMetricas();
                 } else {
                     let passo = 0;
                     function animarFrame() {
                         passo += 4;
                         const finalizado = passo >= dadosPV.length;
                         const limite = finalizado ? dadosPV.length : passo;
-                        desenharGrade();
-                        desenharCurva(dadosSP.slice(0, limite), '#ef4444', 2);
-                        desenharCurva(dadosMV.slice(0, limite), '#38bdf8', 2, [5, 5]);
-                        desenharCurva(dadosPV.slice(0, limite), '#22c55e', 3);
-                        ctx.setLineDash([]);
-                        desenharLegendasEixos();
+                        desenharGrade(); desenharCurva(dadosSP.slice(0, limite), '#ef4444', 2); desenharCurva(dadosMV.slice(0, limite), '#38bdf8', 2, [5, 5]); desenharCurva(dadosPV.slice(0, limite), '#22c55e', 3); ctx.setLineDash([]); desenharLegendasEixos();
                         if (!finalizado) animationFrameId = requestAnimationFrame(animarFrame);
                         else calcularMetricas();
                     }
@@ -1545,24 +1492,14 @@
                 }
             }
 
-            // Atribui eventos de input para todos os sliders e modo
             Object.keys(inputs).forEach(k => { if (inputs[k]) inputs[k].addEventListener('input', () => executarSimulacao(false)); });
             if (modeSelect) modeSelect.addEventListener('change', () => { atualizarInterfaceModo(); executarSimulacao(false); });
-            const btnExecutar = document.getElementById('simExecBtn');
+            const btnExecutar = document.getElementById('simExecBtn'), btnReset = document.getElementById('simResetBtn');
             if (btnExecutar) btnExecutar.addEventListener('click', () => executarSimulacao(true));
-            const btnReset = document.getElementById('simResetBtn');
             if (btnReset) {
                 btnReset.addEventListener('click', () => {
-                    inputs.kp.value = 2.0;
-                    inputs.ki.value = 0.8;
-                    inputs.kd.value = 1.2;
-                    inputs.kPlant.value = 1.0;
-                    inputs.tau.value = 2.0;
-                    inputs.theta.value = 0.0;
-                    inputs.sp.value = 1.0;
-                    modeSelect.value = 'PID';
-                    atualizarInterfaceModo();
-                    executarSimulacao(false);
+                    inputs.kp.value = 2.0; inputs.ki.value = 0.8; inputs.kd.value = 1.2; inputs.kPlant.value = 1.0; inputs.tau.value = 2.0; inputs.theta.value = 0.0; inputs.sp.value = 1.0;
+                    modeSelect.value = 'PID'; atualizarInterfaceModo(); executarSimulacao(false);
                 });
             }
 
