@@ -794,10 +794,53 @@
             </div>
         </div>
 
+        <!-- ============= ABA SOBRE ============= -->
         <div id="tab-about" class="tab-content">
-            <h2 class="section-title">O Seu Espaço</h2>
-            <div class="card"><h3>Sobre a Aplicação</h3><p>Hub oficial do blog <a href="https://www.autoeinstrubr.com.br/" target="_blank">Automação & Instrumentação BR</a> desenhado para estudantes e profissionais.</p></div>
+            <h2 class="section-title">Opções e Sobre</h2>
+            
+            <div class="card">
+                <h3 style="color: var(--text-main); font-size: 1.1rem; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 15px;">⚙️ Configurações</h3>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <span style="font-size: 0.95rem;">Tema Claro (Modo Campo)</span>
+                    <label style="position: relative; display: inline-block; width: 50px; height: 26px;">
+                        <input type="checkbox" id="themeToggle" style="opacity: 0; width: 0; height: 0;">
+                        <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--bg-nav); border-radius: 34px; border: 1px solid var(--border); transition: .4s;"></span>
+                    </label>
+                </div>
+                
+                <button class="btn-secondary" onclick="carregarArtigos()" style="font-size: 0.85rem; padding: 10px;">🔄 Forçar Atualização do Blog</button>
+            </div>
+
+            <div class="card">
+                <h3 style="color: var(--text-main); font-size: 1.1rem; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 15px;">📚 Preparação Petrobras</h3>
+                <p style="font-size: 0.85rem; margin-bottom: 15px;">Acelere o seu ciclo de estudos com materiais direcionados para provas de manutenção e instrumentação.</p>
+                <a href="https://www.autoeinstrubr.com.br/" target="_blank" class="btn-secondary" style="display: block; text-align: center; text-decoration: none; margin-bottom: 10px;">Acessar Ciclo de Estudos</a>
+            </div>
+
+            <div class="card">
+                <h3 style="color: var(--text-main); font-size: 1.1rem; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 15px;">🔗 Automação & Instrumentação BR</h3>
+                
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <img src="URL_DO_SEU_LOGO_OFICIAL_AQUI" alt="Logo Oficial" style="max-width: 150px; height: auto;">
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <a href="https://www.youtube.com/" target="_blank" class="btn-secondary" style="text-align: center; text-decoration: none; background: #ef4444; color: white; border: none;">▶ YouTube</a>
+                    <a href="https://www.autoeinstrubr.com.br/" target="_blank" class="btn-secondary" style="text-align: center; text-decoration: none; background: var(--primary); color: black; border: none;">🌐 Site Oficial</a>
+                </div>
+                
+                <a href="mailto:seuemail@gmail.com?subject=Feedback%20App%20Automação" class="btn-secondary" style="display: block; text-align: center; text-decoration: none; margin-top: 10px; font-size: 0.85rem;">✉️ Reportar Erro ou Sugestão</a>
+            </div>
+
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="#" style="color: var(--text-muted); font-size: 0.75rem; text-decoration: underline;">Política de Privacidade</a>
+                <span style="color: var(--text-muted); font-size: 0.75rem;"> | </span>
+                <a href="#" style="color: var(--text-muted); font-size: 0.75rem; text-decoration: underline;">Termos de Uso</a>
+                <p style="color: var(--border); font-size: 0.7rem; margin-top: 10px;">Versão 1.0.0</p>
+            </div>
         </div>
+        
     </main>
 
     <nav class="bottom-nav">
@@ -866,7 +909,7 @@
                 `;
             }
             feedContainer.innerHTML = skeletonHTML;
-            
+
             if (btnPrev) btnPrev.style.display = 'none';
             if (btnNext) btnNext.style.display = 'none';
 
