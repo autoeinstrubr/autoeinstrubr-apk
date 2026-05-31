@@ -852,13 +852,21 @@
                 </div>
                 <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px; line-height: 1.4;">Ative esta opção para melhorar o contraste e a visibilidade do ecrã sob luz solar direta em inspeções de campo.</p>
                 
-                <button class="btn-secondary" onclick="carregarArtigos()" style="font-size: 0.85rem; padding: 10px;">🔄 Forçar Atualização do Blog</button>
+                <button class="btn-secondary" onclick="carregarArtigos()" style="font-size: 0.85rem; padding: 10px;">🔄 Forçar Atualização: Lista de Artigos do Blog</button>
             </div>
 
             <div class="card">
                 <h3 style="color: var(--accent); font-size: 1.1rem; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 15px;">ℹ️ Sobre a Aplicação</h3>
-                <p style="line-height: 1.6; font-size: 0.95rem;">Hub oficial do projeto <a href="https://www.autoeinstrubr.com.br/" target="_blank" style="color: var(--accent); text-decoration: underline;">Automação & Instrumentação BR</a> desenvolvido para fornecer suporte analítico e prático a estudantes e profissionais de manutenção industrial.</p>
-                <p style="color: var(--text-muted); font-size: 0.75rem; margin-top: 15px; text-align: center; letter-spacing: 0.5px;">Versão 1.0.0</p>
+                
+                <div style="text-align: center; margin-bottom: 20px; background: #ffffff; padding: 15px; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
+                    <img src="https://blogger.googleusercontent.com/img/a/AVvXsEiAim_LlTq75nDnKKVpuo8MHUhD1s-Cwi34Qs3z5luYugDkN_JszkqN_C5MXfjJTvWonJXo2TSfwOFjRika8hJ_PDTuVdWSQ8QguECFQWv2Gz_hXN0VJMO5cwOAEAWGM7csinDXkDwlvgJga62PqME9EVJ1yNGU85Bp9INpNgSQnxkKd1h80406naad92pe=w800" alt="Automação & Instrumentação BR" style="max-height: 45px; object-fit: contain;">
+                </div>
+
+                <p style="line-height: 1.6; font-size: 0.95rem; margin-bottom: 20px;">Hub oficial do projeto <a href="https://www.autoeinstrubr.com.br/" target="_blank" style="color: var(--accent); text-decoration: underline;">Automação & Instrumentação BR</a> desenvolvido para fornecer suporte analítico e prático a estudantes e profissionais de manutenção industrial.</p>
+                
+                <a href="https://www.autoeinstrubr.com.br/" target="_blank" class="btn-secondary" style="display: block; text-align: center; text-decoration: none; padding: 14px; background: var(--primary); color: #020617; border: none; font-size: 1rem; font-weight: 600; box-shadow: 0 4px 6px rgba(0,0,0,0.15);">🌐 Aceder ao Site Oficial</a>
+                
+                <p style="color: var(--text-muted); font-size: 0.75rem; margin-top: 20px; text-align: center; letter-spacing: 0.5px;">Versão 1.0.0</p>
             </div>
         </div>
 
@@ -987,6 +995,35 @@
             const mainElement = document.querySelector('main');
             if (mainElement) mainElement.scrollTop = 0;
         }
+
+        function forcarAtualizacaoBlog(btnElement) {
+            // 1. Feedback visual imediato e bloqueio de múltiplos cliques
+            const textoOriginal = btnElement.innerHTML;
+            btnElement.innerHTML = '⏳ A atualizar feed...';
+            btnElement.style.opacity = '0.7';
+            btnElement.style.pointerEvents = 'none'; 
+
+            // 2. Reinicia a paginação para garantir que busca as notícias mais recentes (Página 1)
+            artigoStartIndex = 1;
+
+            // 3. Chama a função original (que é assíncrona) e espera que termine
+            carregarArtigos().then(() => {
+                // 4. Feedback de sucesso visual
+                btnElement.innerHTML = '✅ Atualizado com Sucesso!';
+                btnElement.style.color = 'var(--primary)';
+                btnElement.style.borderColor = 'var(--primary)';
+                btnElement.style.opacity = '1';
+                
+                // 5. Após 2 segundos, o botão volta ao estado original normal
+                setTimeout(() => {
+                    btnElement.innerHTML = textoOriginal;
+                    btnElement.style.color = 'var(--text-main)';
+                    btnElement.style.borderColor = 'var(--border)';
+                    btnElement.style.pointerEvents = 'auto';
+                }, 2000);
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', carregarArtigos);
 
         // ========================== FERRAMENTA ISA 5.1 (Avançada) ==========================
