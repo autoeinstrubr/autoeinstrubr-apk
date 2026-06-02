@@ -1067,14 +1067,99 @@
         // ========================== FEED DE ARTIGOS (BLOG) ==========================
         let artigoStartIndex = 1;          // página atual (índice inicial)
         const artigosPorPagina = 10;       // quantos artigos por página
+        const CACHE_FEED_KEY = 'app_feed_cache'; // Chave do cache no localStorage
 
-        // Carrega os artigos do Blogger via JSONP/JSON e exibe na tela
-        async function carregarArtigos() {
+        // Função auxiliar para pintar os artigos no HTML
+        function renderizarArtigos(artigos, feedContainer) {
+            feedContainer.innerHTML = '';
+            artigos.forEach(artigo => {
+                let link = artigo.link.find(l => l.rel === 'alternate').href;
+                let imagem = artigo.media$thumbnail ? artigo.media$thumbnail.url.replace('/s72-c/', '/w600/') : 'https://via.placeholder.com/600x300/1e293b/38bdf8?text=Automação+e+Instrumentação';
+                feedContainer.insertAdjacentHTML('beforeend', `
+                    <div class="post-card">
+                        <img src="${imagem}" class="post-image" alt="${artigo.title.$t}">
+                        <div class="post-content">
+                            <span class="post-date">${new Date(artigo.published.$t).toLocaleDateString('pt-BR')}</span>
+                            <h3 class="post-title">${artigo.title.$t}</h3>
+                            <a href="${link}" target="_blank" class="post-btn">Ler Artigo Completo</a>
+                        </div>
+                    </div>
+                `);
+            });
+        }
+
+        // Carrega os artigos (com estratégia de Cache First + Network Update)
+        async function carregarArtigos(forcarRede = false) {
             const feedContainer = document.getElementById('feed-container');
             const btnPrev = document.getElementById('btnPrev');
             const btnNext = document.getElementById('btnNext');
 
-            // Exibe skeleton loading (3 cards fantasmas)
+            // 1. Tenta carregar do Cache primeiro (se for a primeira página e não for atualização forçada)
+            if (artigoStartIndex === 1 && !forcarRede) {
+                const cacheSalvo = localStorage.getItem(CACHE_FEED_KEY);
+                if (cacheSalvo) {
+                    try {
+                        const artigosCache = JSON.parse(cacheSalvo);
+                        renderizarArtigos(artigosCache, feedContainer);
+                        if (btnNext) btnNext.style.display = 'block'; // Assume que há mais páginas se tem cache
+                        // NOTA: Se renderizou do cache, não bloqueamos a tela com skeleton, 
+                        // mas continuamos a função para atualizar em background (se houver rede).
+                    } catch (e) {
+                        console.log('Cache corrompido, a buscar da rede...');
+                    }
+                } else {
+                    // Sem cache, exibe o Skeleton Loading
+                    exibirSkeleton(feedContainer);
+                }
+            } else {
+                exibirSkeleton(feedContainer);
+            }
+
+            if (btnPrev) btnPrev.style.display = 'none';
+            if (btnNext) btnNext.style.display = 'none';
+
+            // 2. Busca na Internet (Blogger API)
+            try {
+                const urlPaginada = `https://www.autoeinstrubr.com.br/feeds/posts/default?alt=json&max-results=${artigosPorPagina}&start-index=${artigoStartIndex}`;
+                const resposta = await fetch(urlPaginada);
+                if (!resposta.ok) throw new Error(`HTTP ${resposta.status}`);
+                const dados = await resposta.json();
+
+                if (!dados.feed || !dados.feed.entry) throw new Error('Formato inesperado');
+
+                const artigos = dados.feed.entry;
+
+                if (artigos.length === 0) {
+                    feedContainer.innerHTML = '<p style="text-align:center; color:var(--text-muted);">Nenhum artigo encontrado nesta página.</p>';
+                    if (btnPrev) btnPrev.style.display = artigoStartIndex > 1 ? 'block' : 'none';
+                    return;
+                }
+
+                // 3. Atualiza a tela com os dados frescos
+                renderizarArtigos(artigos, feedContainer);
+
+                // 4. Se for a página 1, guarda estes dados novos no Cache Offline!
+                if (artigoStartIndex === 1) {
+                    localStorage.setItem(CACHE_FEED_KEY, JSON.stringify(artigos));
+                }
+
+                // Controle de visibilidade dos botões de paginação
+                if (btnPrev) btnPrev.style.display = artigoStartIndex > 1 ? 'block' : 'none';
+                const totalResultados = parseInt(dados.feed.openSearch$totalResults.$t) || 0;
+                if (btnNext) btnNext.style.display = (artigoStartIndex + artigosPorPagina <= totalResultados) ? 'block' : 'none';
+
+            } catch (erro) {
+                console.error('Erro de conexão:', erro);
+                // Se falhar (sem internet) e estiver na página 1, o cache já está na tela.
+                // Só exibimos erro se o cache também falhou ou se ele tentou ir para a página 2 sem internet.
+                if (feedContainer.innerHTML.includes('skeleton-card') || feedContainer.innerHTML === '') {
+                    feedContainer.innerHTML = '<p style="text-align:center; color:var(--danger);">❌ Erro ao carregar feed. Verifique a ligação à rede.</p>';
+                }
+                if (btnPrev) btnPrev.style.display = artigoStartIndex > 1 ? 'block' : 'none';
+            }
+        }
+
+        function exibirSkeleton(feedContainer) {
             let skeletonHTML = '';
             for(let i = 0; i < 3; i++) {
                 skeletonHTML += `
@@ -1090,54 +1175,6 @@
                 `;
             }
             feedContainer.innerHTML = skeletonHTML;
-
-            // Esconde botões de paginação enquanto carrega
-            if (btnPrev) btnPrev.style.display = 'none';
-            if (btnNext) btnNext.style.display = 'none';
-
-            try {
-                const urlPaginada = `https://www.autoeinstrubr.com.br/feeds/posts/default?alt=json&max-results=${artigosPorPagina}&start-index=${artigoStartIndex}`;
-                const resposta = await fetch(urlPaginada);
-                if (!resposta.ok) throw new Error(`HTTP ${resposta.status}`);
-                const dados = await resposta.json();
-
-                if (!dados.feed || !dados.feed.entry) throw new Error('Formato inesperado');
-
-                feedContainer.innerHTML = '';
-                const artigos = dados.feed.entry;
-
-                if (artigos.length === 0) {
-                    feedContainer.innerHTML = '<p style="text-align:center; color:var(--text-muted);">Nenhum artigo encontrado nesta página.</p>';
-                    if (btnPrev) btnPrev.style.display = artigoStartIndex > 1 ? 'block' : 'none';
-                    return;
-                }
-
-                // Monta cada card de artigo
-                artigos.forEach(artigo => {
-                    let link = artigo.link.find(l => l.rel === 'alternate').href;
-                    let imagem = artigo.media$thumbnail ? artigo.media$thumbnail.url.replace('/s72-c/', '/w600/') : 'https://via.placeholder.com/600x300/1e293b/38bdf8?text=Automação+e+Instrumentação';
-                    feedContainer.insertAdjacentHTML('beforeend', `
-                        <div class="post-card">
-                            <img src="${imagem}" class="post-image" alt="${artigo.title.$t}">
-                            <div class="post-content">
-                                <span class="post-date">${new Date(artigo.published.$t).toLocaleDateString('pt-BR')}</span>
-                                <h3 class="post-title">${artigo.title.$t}</h3>
-                                <a href="${link}" target="_blank" class="post-btn">Ler Artigo Completo</a>
-                            </div>
-                        </div>
-                    `);
-                });
-
-                // Controle de visibilidade dos botões de paginação
-                if (btnPrev) btnPrev.style.display = artigoStartIndex > 1 ? 'block' : 'none';
-                const totalResultados = parseInt(dados.feed.openSearch$totalResults.$t) || 0;
-                if (btnNext) btnNext.style.display = (artigoStartIndex + artigosPorPagina <= totalResultados) ? 'block' : 'none';
-
-            } catch (erro) {
-                console.error(erro);
-                feedContainer.innerHTML = '<p style="text-align:center; color:var(--danger);">❌ Erro ao carregar feed. Verifique a ligação à rede.</p>';
-                if (btnPrev) btnPrev.style.display = artigoStartIndex > 1 ? 'block' : 'none';
-            }
         }
 
         // Navega entre páginas do feed (anterior/próxima)
@@ -1147,7 +1184,7 @@
             } else if (direcao === -1 && artigoStartIndex > 1) {
                 artigoStartIndex -= artigosPorPagina;
             }
-            carregarArtigos();
+            carregarArtigos(true); // Se o utilizador navegar, força a busca na rede para as páginas antigas
             const mainElement = document.querySelector('main');
             if (mainElement) mainElement.scrollTop = 0; // volta ao topo
         }
@@ -1161,7 +1198,8 @@
 
             artigoStartIndex = 1; // volta para a primeira página
 
-            carregarArtigos().then(() => {
+            // O parâmetro 'true' avisa a função para ignorar o cache e ir direto à internet
+            carregarArtigos(true).then(() => {
                 btnElement.innerHTML = '✅ Atualizado com Sucesso!';
                 btnElement.style.color = 'var(--primary)';
                 btnElement.style.borderColor = 'var(--primary)';
@@ -1176,7 +1214,7 @@
         }
 
         // Carrega os artigos assim que a página terminar de carregar
-        document.addEventListener('DOMContentLoaded', carregarArtigos);
+        document.addEventListener('DOMContentLoaded', () => carregarArtigos(false));
 
         // ========================== FERRAMENTA ISA 5.1 (Avançada) ==========================
         (function initISA() {
