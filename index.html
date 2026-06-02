@@ -4,31 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Automação & Instrumentação BR</title>
+    <!-- Fonte principal do sistema -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* ================================ */
         /* VARIÁVEIS GLOBAIS (DARK THEME)  */
         /* ================================ */
         :root {
-            --bg-main: #020617;      
-            --bg-panel: #0f172a;     
-            --bg-nav: #1e293b;       
-            --accent: #38bdf8;       
-            --primary: #22c55e;      
-            --text-main: #f8fafc;    
-            --text-muted: #94a3b8;   
-            --border: #334155;       
-            --danger: #ef4444;       
-            --nav-height: 65px;      
-            --header-height: 70px;    
+            --bg-main: #020617;      /* Fundo principal escuro */
+            --bg-panel: #0f172a;     /* Fundo dos painéis / cartões */
+            --bg-nav: #1e293b;       /* Fundo da barra de navegação inferior */
+            --accent: #38bdf8;       /* Cor de destaque (azul claro) */
+            --primary: #22c55e;      /* Cor primária (verde) */
+            --text-main: #f8fafc;    /* Texto principal branco */
+            --text-muted: #94a3b8;   /* Texto secundário acinzentado */
+            --border: #334155;       /* Cor das bordas */
+            --danger: #ef4444;       /* Cor de erro / perigo */
+            --nav-height: 65px;      /* Altura da barra de navegação inferior */
+            --header-height: 70px;   /* Altura do cabeçalho superior */
         }
 
+        /* Reset e configurações base */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
             font-family: 'Inter', sans-serif;
-            -webkit-tap-highlight-color: transparent; 
+            -webkit-tap-highlight-color: transparent; /* Remove o destaque ao tocar em elementos móveis */
         }
 
         body {
@@ -37,9 +39,10 @@
             height: 100vh;
             display: flex;
             flex-direction: column;
-            overflow: hidden;       
+            overflow: hidden;        /* Impede rolagem global, cada área tem seu próprio scroll */
         }
 
+        /* Cabeçalho com logo */
         header {
             height: var(--header-height);
             background-color: #ffffff;
@@ -56,6 +59,7 @@
             object-fit: contain;
         }
 
+        /* Área principal rolável */
         main {
             flex: 1;
             position: relative;
@@ -64,6 +68,7 @@
             padding-bottom: 20px;
         }
 
+        /* Abas de conteúdo (feed, ferramentas, vitrine, sobre) */
         .tab-content {
             display: none;
             padding: 20px;
@@ -77,6 +82,7 @@
             to   { opacity: 1; transform: translateY(0); }
         }
 
+        /* Títulos de seção */
         .section-title {
             font-size: 1.4rem;
             margin-bottom: 15px;
@@ -99,7 +105,7 @@
             font-size: 0.95rem;
         }
 
-        /* Grade de botões das ferramentas (Corrigida com Flexbox) */
+        /* Grade responsiva dos botões das ferramentas */
         .grid-ferramentas {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
@@ -133,6 +139,7 @@
             font-size: 0.9rem;
         }
 
+        /* Botão de voltar dentro de cada ferramenta */
         .btn-voltar {
             display: inline-block;
             background-color: transparent;
@@ -146,6 +153,7 @@
             cursor: pointer;
         }
 
+        /* Painel (card com cabeçalho e corpo) */
         .panel {
             background: var(--bg-panel);
             border: 1px solid var(--border);
@@ -167,6 +175,7 @@
             padding: 16px;
         }
 
+        /* Grupos de controle (rótulos, inputs) */
         .control-group { margin-bottom: 20px; }
         .control-group h4 {
             margin: 0 0 12px;
@@ -176,6 +185,7 @@
             letter-spacing: 0.5px;
         }
 
+        /* Estilo moderno para inputs e selects */
         .input-moderno {
             width: 100%;
             background: var(--bg-main);
@@ -199,6 +209,7 @@
             padding-right: 30px;
         }
 
+        /* Botão secundário padrão */
         .btn-secondary {
             background: var(--bg-nav);
             color: var(--text-main);
@@ -211,6 +222,7 @@
             cursor: pointer;
         }
 
+        /* Estilos para o feed de artigos (cards) */
         .loader { text-align: center; color: var(--text-muted); padding: 40px 0; font-size: 0.9rem; }
         .post-card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
         .post-image { width: 100%; height: 180px; object-fit: cover; }
@@ -219,35 +231,41 @@
         .post-title { font-size: 1.15rem; color: var(--text-main); margin-bottom: 10px; }
         .post-btn { display: inline-block; background: var(--bg-nav); color: var(--primary); border: 1px solid var(--border); padding: 8px 16px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; text-decoration: none; }
 
+        /* Caixa de resultado comum */
         .result-box { background: rgba(34, 197, 94, 0.1); border: 1px solid var(--primary); padding: 15px; border-radius: 10px; text-align: center; margin-top: 15px; }
         .result-val { font-size: 1.5rem; font-weight: 700; color: var(--primary); display: block; margin-top: 5px; }
         .info-box { background: var(--bg-nav); border: 1px solid var(--border); border-left: 3px solid var(--accent); padding: 14px; border-radius: 10px; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px; }
         .info-box strong { color: var(--text-main); }
 
+        /* Simulador PID - organização flexível */
         #pid-sim-widget { width: 100%; }
         #pid-sim-widget .pid-grid { display: flex; flex-direction: column; gap: 20px; }
         #pid-sim-widget .pid-grid .panel:nth-child(1) { order: 2; }
         #pid-sim-widget .pid-grid .panel:nth-child(2) { order: 1; position: sticky; top: -20px; z-index: 50; background-color: var(--bg-panel); box-shadow: 0 15px 20px -5px rgba(0,0,0,0.6); }
 
+        /* Sliders (inputs range) */
         .slider-row { margin-bottom: 15px; }
         .slider-row label { display: flex; justify-content: space-between; font-size: 0.85rem; }
         .slider-row input[type=range] { width: 100%; accent-color: var(--primary); }
 
+        /* Métricas de desempenho do PID */
         .metrics { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; padding: 16px; border-top: 1px solid var(--border); }
         .metric-card { background: linear-gradient(180deg, var(--bg-nav), var(--bg-panel)); border: 1px solid var(--border); border-radius: 12px; padding: 10px; text-align: center; }
         .metric-title { font-size: 0.7rem; color: var(--text-muted); }
         .metric-value { font-size: 1rem; font-weight: 700; color: var(--text-main); }
 
-
+        /* Barra de navegação inferior */
         nav.bottom-nav { height: var(--nav-height); background-color: var(--bg-nav); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; padding-bottom: env(safe-area-inset-bottom); z-index: 10; }
         .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); text-decoration: none; width: 100%; height: 100%; border: none; background: none; cursor: pointer; }
         .nav-item svg { width: 24px; height: 24px; margin-bottom: 4px; fill: currentColor; }
         .nav-item.active { color: var(--accent); }
         .nav-item.active svg { transform: scale(1.1); }
 
+        /* Avisos e textos auxiliares */
         .aviso { font-size: 0.7rem; color: var(--accent); margin-top: 5px; }
         .aviso-warning { color: var(--danger); }
 
+        /* Vitrine (loja) */
         .store-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; margin-top: 15px; }
         .product-card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 12px; padding: 15px; text-align: center; display: flex; flex-direction: column; justify-content: space-between; }
         .product-img { width: 100%; height: 120px; object-fit: contain; margin-bottom: 10px; background: #ffffff; border-radius: 8px; padding: 5px; }
@@ -256,7 +274,7 @@
         .product-btn { display: block; background: #ffe600; color: #2d3277; text-decoration: none; font-weight: bold; font-size: 0.85rem; padding: 10px; border-radius: 8px; transition: 0.2s; }
         .product-btn:active { transform: scale(0.95); }
 
-        /* Controlo Segmentado (Abas Internas - Bombas) */
+        /* Controle segmentado (abas internas na ferramenta de bombas) */
         .segmented-control {
             display: flex;
             background: #020617;
@@ -288,7 +306,7 @@
             transition: opacity 1.5s ease;
         }
 
-/* ========================== SKELETON LOADING (FEED) ========================== */
+        /* Esqueletos de carregamento (skeleton loading) para o feed */
         .skeleton {
             background: linear-gradient(90deg, var(--bg-nav) 25%, var(--border) 50%, var(--bg-nav) 75%);
             background-size: 200% 100%;
@@ -313,19 +331,17 @@
         .skeleton-title-short { width: 70%; height: 20px; margin-bottom: 16px; }
         .skeleton-btn { width: 150px; height: 35px; border-radius: 8px; }
 
-        /* ========================================================================== */
-        /* ALTERNÂNCIA DE TEMA (MODO CAMPO / LIGHT THEME)                             */
-        /* ========================================================================== */
+        /* Tema claro (Modo Campo) – substitui as variáveis CSS */
         body.light-theme {
-            --bg-main: #f1f5f9;      /* Fundo cinzento claro */
-            --bg-panel: #ffffff;     /* Painéis e cartões totalmente brancos */
-            --bg-nav: #e2e8f0;       /* Barra de navegação clara */
-            --text-main: #0f172a;    /* Texto principal em azul escuro quase preto */
-            --text-muted: #475569;   /* Texto secundário cinzento escuro */
-            --border: #cbd5e1;       /* Bordas claras de alto contraste */
+            --bg-main: #f1f5f9;
+            --bg-panel: #ffffff;
+            --bg-nav: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --border: #cbd5e1;
         }
 
-        /* Estilização Estrutural do Switch Slider */
+        /* Switch slider para alternância de tema */
         .switch-slider {
             position: absolute;
             cursor: pointer;
@@ -351,16 +367,18 @@
         input:checked + .switch-slider:before {
             transform: translateX(24px);
         }
-    
     </style>
 </head>
 <body>
 
+    <!-- Cabeçalho com imagem do logo -->
     <header>
         <img src="https://blogger.googleusercontent.com/img/a/AVvXsEiAim_LlTq75nDnKKVpuo8MHUhD1s-Cwi34Qs3z5luYugDkN_JszkqN_C5MXfjJTvWonJXo2TSfwOFjRika8hJ_PDTuVdWSQ8QguECFQWv2Gz_hXN0VJMO5cwOAEAWGM7csinDXkDwlvgJga62PqME9EVJ1yNGU85Bp9INpNgSQnxkKd1h80406naad92pe=w800" alt="Logo" class="header-logo">
     </header>
 
+    <!-- Área principal que exibe o conteúdo ativo (feed, ferramentas, vitrine, sobre) -->
     <main>
+        <!-- ABA Feed de Artigos (inicialmente ativa) -->
         <div id="tab-feed" class="tab-content active">
             <h2 class="section-title">Últimos Artigos</h2>
             <div id="feed-container"><div class="loader">A carregar publicações...</div></div>
@@ -370,7 +388,9 @@
             </div>
         </div>
 
+        <!-- ABA Ferramentas (Caixa de Ferramentas) -->
         <div id="tab-tools" class="tab-content">
+            <!-- Menu principal das ferramentas -->
             <div id="tools-menu">
                 <h2 class="section-title">Caixa de Ferramentas</h2>
                 <div class="grid-ferramentas">
@@ -387,13 +407,26 @@
                 </div>
             </div>
 
+            <!-- ========== SIMULADOR PID ========== -->
             <div id="tool-pid" style="display: none;">
                 <button class="btn-voltar" onclick="closeTool('tool-pid')">← Voltar</button>
                 <div id="pid-sim-widget">
                     <div class="pid-grid">
+                        <!-- Painel de parâmetros -->
                         <div class="panel">
-                            <div class="panel-header"><h3>Parâmetros de Malha</h3></div>
+                            <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center;">
+                                <h3 style="margin: 0;">Parâmetros de Malha</h3>
+                                <button onclick="toggleAjuda('ajuda-pid')" style="background: none; border: none; font-size: 1.2rem; cursor: pointer; padding: 0; outline: none;" title="Ver Documentação">❓</button>
+                            </div>
                             <div class="panel-body">
+                                <!-- Caixa de ajuda contextual (inicialmente oculta) -->
+                                <div id="ajuda-pid" class="info-box" style="display: none; border-left-color: var(--primary); margin-bottom: 20px; text-align: justify; animation: fadeIn 0.3s ease;">
+                                    <h4 style="color: var(--text-main); margin-bottom: 10px; font-size: 0.95rem;">📖 Guia Técnico</h4>
+                                    <p style="margin-bottom: 8px;"><strong>Função:</strong> Simular a resposta transiente de um processo industrial de 1ª ordem com tempo morto (FOPDT) sob a atuação de um controlador PID.</p>
+                                    <p style="margin-bottom: 8px;"><strong>Como usar:</strong> Ajuste a sintonia do algoritmo (Kp, Ki, Kd) e as características do chão de fábrica (Ganho da Planta, Constante de tempo τ e Atraso θ). Selecione o modo de atuação (P, PI, PD ou PID completo) para injetar o degrau e avaliar o comportamento do sistema.</p>
+                                    <p style="margin-bottom: 0;"><strong>Análise de Qualidade:</strong> O motor avalia o sinal em tempo real, calculando o <i>Overshoot</i> (ultrapassagem máxima além do Setpoint) e o Tempo de Acomodação (quando a oscilação se confina numa margem de erro de 2%). Sistemas mal sintonizados exibirão instabilidade gráfica crónica ou alertas vermelhos.</p>
+                                </div>
+
                                 <select id="simMode" class="input-moderno">
                                     <option value="P">Proporcional</option>
                                     <option value="PI">PI</option>
@@ -415,8 +448,9 @@
                             </div>
                         </div>
 
+                        <!-- Painel de resposta gráfica -->
                         <div class="panel">
-                            <div class="panel-header"><h3>Resposta Transiente</h3></div>
+                            <div class="panel-header"><h3 style="margin: 0;">Resposta Transiente</h3></div>
                             <div style="padding:16px; width:100%;"><canvas id="simCanvas" width="800" height="400" style="width:100%; background:#020617; border-radius:12px; border:1px solid #1e293b; aspect-ratio:2/1;"></canvas></div>
                             <div style="padding: 0 16px 16px 16px; font-size: 0.8rem; display: flex; flex-direction: column; gap: 8px; color: var(--text-muted); line-height: 1.4;">
                                 <div style="display: flex; align-items: center; gap: 8px;"><span style="display: inline-block; width: 12px; height: 12px; background: #ef4444; border-radius: 3px;"></span> <strong style="color: var(--text-main);">Setpoint (SP):</strong> O valor desejado onde o processo deve chegar (o alvo).</div>
@@ -433,11 +467,21 @@
                 </div>
             </div>
 
+            <!-- ========== SIMBOLOGIA ISA 5.1 ========== -->
             <div id="tool-isa" style="display: none;">
                 <button class="btn-voltar" onclick="closeTool('tool-isa')">← Voltar</button>
                 <div class="panel">
-                    <div class="panel-header"><h3>Dicionário ISA 5.1</h3></div>
+                    <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center;">
+                        <h3 style="margin: 0;">Dicionário ISA 5.1</h3>
+                        <button onclick="toggleAjuda('ajuda-isa')" style="background: none; border: none; font-size: 1.2rem; cursor: pointer; padding: 0; outline: none;" title="Ver Documentação">❓</button>
+                    </div>
                     <div class="panel-body">
+                        <div id="ajuda-isa" class="info-box" style="display: none; border-left-color: var(--primary); margin-bottom: 20px; text-align: justify; animation: fadeIn 0.3s ease;">
+                            <h4 style="color: var(--text-main); margin-bottom: 10px; font-size: 0.95rem;">📖 Guia Técnico</h4>
+                            <p style="margin-bottom: 8px;"><strong>Função:</strong> Descodificar TAGs de instrumentos de campo e malhas de controlo baseados na norma internacional de instrumentação.</p>
+                            <p style="margin-bottom: 8px;"><strong>Como usar:</strong> Construa a sigla do equipamento da esquerda para a direita. A primeira letra define o que se está a medir (ex: Pressão, Temperatura). As letras subsequentes definem o que o equipamento faz com essa medida (ex: Indica, Transmite, Controla).</p>
+                            <p style="margin-bottom: 0;"><strong>Base Normativa:</strong> Referenciado sob a norma ISA 5.1 (Instrumentation Symbols and Identification) da <i>International Society of Automation</i>.</p>
+                        </div>
                         <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:15px;">Selecione as letras do TAG do instrumento para identificar a sua função.</p>
                         <div class="control-group">
                             <h4>1ª Letra (Variável Medida)</h4>
@@ -498,11 +542,21 @@
                 </div>
             </div>
 
+            <!-- ========== CONVERSOR 4-20mA ========== -->
             <div id="tool-converter" style="display: none;">
                 <button class="btn-voltar" onclick="closeTool('tool-converter')">← Voltar</button>
                 <div class="panel">
-                    <div class="panel-header"><h3>Conversor 4-20mA</h3></div>
+                    <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center;">
+                        <h3 style="margin: 0;">Conversor 4-20mA</h3>
+                        <button onclick="toggleAjuda('ajuda-420')" style="background: none; border: none; font-size: 1.2rem; cursor: pointer; padding: 0; outline: none;" title="Ver Documentação">❓</button>
+                    </div>
                     <div class="panel-body">
+                        <div id="ajuda-420" class="info-box" style="display: none; border-left-color: var(--primary); margin-bottom: 20px; text-align: justify; animation: fadeIn 0.3s ease;">
+                            <h4 style="color: var(--text-main); margin-bottom: 10px; font-size: 0.95rem;">📖 Guia Técnico</h4>
+                            <p style="margin-bottom: 8px;"><strong>Função:</strong> Escalonamento e correlação entre a corrente de loop (mA), a percentagem do sinal (%) e a Variável de Processo (PV).</p>
+                            <p style="margin-bottom: 8px;"><strong>Como usar:</strong> Defina o Mínimo (LRV) e o Máximo (URV) do instrumento. Ao preencher qualquer um dos outros três campos (mA, % ou PV), os restantes são calculados instantaneamente.</p>
+                            <p style="margin-bottom: 0;"><strong>Modos Matemáticos:</strong> O modo "Linear" é o padrão. O modo "Raiz Quadrada" é essencial para medição de vazão por pressão diferencial, aplicando um <i>low flow cut-off</i> interno para evitar leituras ruidosas e instáveis perto do zero (abaixo de 4 mA).</p>
+                        </div>
                         <div class="control-group" style="margin-bottom: 15px;">
                             <label style="font-size:0.85rem;">Modo de Conversão</label>
                             <select id="cvModo" class="input-moderno">
@@ -521,11 +575,21 @@
                 </div>
             </div>
 
+            <!-- ========== CÁLCULO DE VÁLVULA (Kv / Cv) ========== -->
             <div id="tool-valve" style="display: none;">
                 <button class="btn-voltar" onclick="closeTool('tool-valve')">← Voltar</button>
                 <div class="panel">
-                    <div class="panel-header"><h3>Dimensionamento Válvula (Líquidos)</h3></div>
+                    <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center;">
+                        <h3 style="margin: 0;">Dimensionamento Válvula (Líquidos)</h3>
+                        <button onclick="toggleAjuda('ajuda-valvula')" style="background: none; border: none; font-size: 1.2rem; cursor: pointer; padding: 0; outline: none;" title="Ver Documentação">❓</button>
+                    </div>
                     <div class="panel-body">
+                        <div id="ajuda-valvula" class="info-box" style="display: none; border-left-color: var(--primary); margin-bottom: 20px; text-align: justify; animation: fadeIn 0.3s ease;">
+                            <h4 style="color: var(--text-main); margin-bottom: 10px; font-size: 0.95rem;">📖 Guia Técnico</h4>
+                            <p style="margin-bottom: 8px;"><strong>Função:</strong> Determinar os coeficientes de vazão (Kv e Cv) necessários para o dimensionamento correto de válvulas de controlo em escoamento de líquidos incompressíveis.</p>
+                            <p style="margin-bottom: 8px;"><strong>Como usar:</strong> Insira a vazão máxima esperada e as pressões montante (Entrada) e jusante (Saída) da válvula. Para fluidos diferentes da água, ajuste a Densidade Relativa (G) e a Viscosidade.</p>
+                            <p style="margin-bottom: 0;"><strong>Diagnósticos Inteligentes:</strong> O motor avalia o diferencial de pressão (ΔP) face à pressão de entrada. Se o ΔP for muito baixo, avisa sobre risco de <i>Oversizing</i> (válvula superdimensionada que operará quase fechada). Avalia também o Reynolds da válvula (Rev) para emitir alertas sobre escoamento viscoso laminar.</p>
+                        </div>
                         <div style="display:flex; gap:10px; margin-bottom: 10px;">
                             <div style="flex:1;"><label style="font-size:0.85rem;">Vazão (Q) em m³/h</label><input type="number" id="vlvQ" value="10" class="input-moderno" inputmode="decimal" step="any"></div>
                             <div style="flex:1;"><label style="font-size:0.85rem;">Viscosidade (cSt)</label><input type="number" id="vlvVisc" value="1" title="Água = 1 cSt" class="input-moderno" inputmode="decimal" step="any"></div>
@@ -549,11 +613,21 @@
                 </div>
             </div>
 
+            <!-- ========== TABELA PT100 (Callendar-Van Dusen) ========== -->
             <div id="tool-temp" style="display: none;">
                 <button class="btn-voltar" onclick="closeTool('tool-temp')">← Voltar</button>
                 <div class="panel">
-                    <div class="panel-header"><h3>Conversor Elétrico/Temperatura</h3></div>
+                    <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center;">
+                        <h3 style="margin: 0;">Conversor Elétrico/Temperatura</h3>
+                        <button onclick="toggleAjuda('ajuda-pt100')" style="background: none; border: none; font-size: 1.2rem; cursor: pointer; padding: 0; outline: none;" title="Ver Documentação">❓</button>
+                    </div>
                     <div class="panel-body">
+                        <div id="ajuda-pt100" class="info-box" style="display: none; border-left-color: var(--primary); margin-bottom: 20px; text-align: justify; animation: fadeIn 0.3s ease;">
+                            <h4 style="color: var(--text-main); margin-bottom: 10px; font-size: 0.95rem;">📖 Guia Técnico</h4>
+                            <p style="margin-bottom: 8px;"><strong>Função:</strong> Conversão bidirecional exata entre resistência elétrica (Ohms) e temperatura (°C) para termoresistências de platina (100 Ω a 0°C).</p>
+                            <p style="margin-bottom: 8px;"><strong>Como usar:</strong> Digite o valor lido no multímetro no campo "Sinal", ou digite a temperatura desejada para saber qual a resistência correspondente a injetar.</p>
+                            <p style="margin-bottom: 0;"><strong>Acurácia e Norma:</strong> O cálculo abandona aproximações lineares básicas e utiliza a equação rigorosa de <strong>Callendar-Van Dusen</strong> (Normas IEC 60751 / ITS-90). Para temperaturas negativas, aplica o método iterativo de Newton-Raphson, garantindo erro residual quase nulo de -200°C a 850°C.</p>
+                        </div>
                         <select id="thermoType" class="input-moderno" style="margin-bottom:20px;">
                             <option value="pt100">Sensor PT100 (Ohms)</option>
                         </select>
@@ -567,26 +641,44 @@
                 </div>
             </div>
 
+            <!-- ========== CONVERSÃO DE UNIDADES ========== -->
             <div id="tool-units" style="display: none;">
                 <button class="btn-voltar" onclick="closeTool('tool-units')">← Voltar</button>
                 <div class="panel">
-                    <div class="panel-header"><h3>Unidades da Engenharia</h3></div>
+                    <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center;">
+                        <h3 style="margin: 0;">Unidades da Engenharia</h3>
+                        <button onclick="toggleAjuda('ajuda-unidades')" style="background: none; border: none; font-size: 1.2rem; cursor: pointer; padding: 0; outline: none;" title="Ver Documentação">❓</button>
+                    </div>
                     <div class="panel-body">
+                        <div id="ajuda-unidades" class="info-box" style="display: none; border-left-color: var(--primary); margin-bottom: 20px; text-align: justify; animation: fadeIn 0.3s ease;">
+                            <h4 style="color: var(--text-main); margin-bottom: 10px; font-size: 0.95rem;">📖 Guia Técnico</h4>
+                            <p style="margin-bottom: 8px;"><strong>Função:</strong> Conversão rápida e bidirecional das principais grandezas físicas (Pressão, Temperatura e Comprimento/Nível) utilizadas na calibração e instrumentação industrial.</p>
+                            <p style="margin-bottom: 8px;"><strong>Como usar:</strong> Selecione a categoria desejada no primeiro menu. Ajuste as unidades nos menus laterais e insira o valor numérico em qualquer um dos campos de texto; o campo oposto atualizará o valor instantaneamente.</p>
+                            <p style="margin-bottom: 0;"><strong>Acurácia:</strong> Utiliza fatores de conversão exatos padronizados (ex: 1 bar = 14.5038 psi) e fórmulas termométricas algébricas completas para garantir que não haja truncamento prematuro de casas decimais durante os ajustes em campo.</p>
+                        </div>
+
                         <select id="unitCategory" class="input-moderno" style="margin-bottom:20px;">
                             <option value="pressure">Pressão</option>
                             <option value="temperature">Temperatura</option>
                             <option value="length">Comprimento / Nível</option>
                         </select>
-                        <div style="display:flex; gap:10px; margin-bottom:10px;"><input type="number" id="unitInput1" placeholder="0" class="input-moderno" inputmode="decimal" style="flex:2;"><select id="unitSelect1" class="input-moderno" style="flex:1; padding:12px 5px;"></select></div>
-                        <div style="display:flex; gap:10px;"><input type="number" id="unitInput2" placeholder="0" class="input-moderno" inputmode="decimal" style="flex:2;"><select id="unitSelect2" class="input-moderno" style="flex:1; padding:12px 5px;"></select></div>
+                        <div style="display:flex; gap:10px; margin-bottom:10px;">
+                            <input type="number" id="unitInput1" placeholder="0" class="input-moderno" inputmode="decimal" style="flex:2;">
+                            <select id="unitSelect1" class="input-moderno" style="flex:1; padding:12px 5px;"></select>
+                        </div>
+                        <div style="display:flex; gap:10px;">
+                            <input type="number" id="unitInput2" placeholder="0" class="input-moderno" inputmode="decimal" style="flex:2;">
+                            <select id="unitSelect2" class="input-moderno" style="flex:1; padding:12px 5px;"></select>
+                        </div>
                     </div>
                 </div>
             </div>
 
+            <!-- ========== GUIA DE REDES INDUSTRIAIS ========== -->
             <div id="tool-protocols" style="display: none;">
                 <button class="btn-voltar" onclick="closeTool('tool-protocols')">← Voltar</button>
                 <div class="panel">
-                    <div class="panel-header"><h3>Guia de Redes Industriais</h3></div>
+                    <div class="panel-header"><h3 style="margin: 0;">Guia de Redes Industriais</h3></div>
                     <div class="panel-body">
                         <div class="info-box"><strong>RS-485 (Modbus/Profibus)</strong><br>• Ligação a 2 fios.<br>• Pino A (TX-/RX-) / Pino B (TX+/RX+).<br>• Distância Máxima: ~1200m.<br>• Requer Resistor de Terminação: 120Ω nas pontas.</div>
                         <div class="info-box"><strong>Protocolo HART</strong><br>• Sinal digital sobreposto ao 4-20mA.<br>• Padrão FSK (1200Hz para '1', 2200Hz para '0').<br>• Requer Resistor de Loop: ~250Ω para o comunicador ler o sinal.</div>
@@ -595,11 +687,22 @@
                 </div>
             </div>
 
+            <!-- ========== PLACA DE ORIFÍCIO (ISO 5167) ========== -->
             <div id="tool-orifice" style="display: none;">
                 <button class="btn-voltar" onclick="closeTool('tool-orifice')">← Voltar</button>
                 <div class="panel">
-                    <div class="panel-header"><h3>Placa de Orifício (ISO 5167)</h3></div>
+                    <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center;">
+                        <h3 style="margin: 0;">Placa de Orifício (ISO 5167)</h3>
+                        <button onclick="toggleAjuda('ajuda-orificio')" style="background: none; border: none; font-size: 1.2rem; cursor: pointer; padding: 0; outline: none;" title="Ver Documentação">❓</button>
+                    </div>
                     <div class="panel-body">
+                        <div id="ajuda-orificio" class="info-box" style="display: none; border-left-color: var(--primary); margin-bottom: 20px; text-align: justify; animation: fadeIn 0.3s ease;">
+                            <h4 style="color: var(--text-main); margin-bottom: 10px; font-size: 0.95rem;">📖 Guia Técnico</h4>
+                            <p style="margin-bottom: 8px;"><strong>Função:</strong> Determina as vazões volumétrica e mássica de fluidos a partir da pressão diferencial (ΔP) gerada por uma restrição física na tubulação.</p>
+                            <p style="margin-bottom: 8px;"><strong>Como usar:</strong> Selecione o fluido. Para vapor, insira a pressão estática (bar abs) e a temperatura (°C) para o cálculo automático da densidade. Forneça os diâmetros exatos do tubo e do furo (mm), seguidos pelo ΔP (mbar).</p>
+                            <p style="margin-bottom: 0;"><strong>Acurácia:</strong> O motor de cálculo executa uma iteração de 5 ciclos baseada na equação de <strong>Stolz</strong> para tomadas de flange. A precisão é garantida dentro dos limites da ISO 5167: relação Beta (β) entre 0.1 e 0.75, e Número de Reynolds (Re) acima de 10.000.</p>
+                        </div>
+
                         <div class="info-box"><strong>Vazão por Pressão Diferencial (ISO 5167)</strong><br>Cálculo iterativo do Coeficiente de Descarga (C) em função do Número de Reynolds (Re).</div>
                         
                         <div class="control-group">
@@ -672,11 +775,22 @@
                 </div>
             </div>
 
+            <!-- ========== GUIA DE TERMOPARES ========== -->
             <div id="tool-thermocouples" style="display: none;">
                 <button class="btn-voltar" onclick="closeTool('tool-thermocouples')">← Voltar</button>
                 <div class="panel">
-                    <div class="panel-header"><h3>Guia de Consulta de Termopares</h3></div>
+                    <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center;">
+                        <h3 style="margin: 0;">Guia de Consulta de Termopares</h3>
+                        <button onclick="toggleAjuda('ajuda-termopares')" style="background: none; border: none; font-size: 1.2rem; cursor: pointer; padding: 0; outline: none;" title="Ver Documentação">❓</button>
+                    </div>
                     <div class="panel-body">
+                        <div id="ajuda-termopares" class="info-box" style="display: none; border-left-color: var(--primary); margin-bottom: 20px; text-align: justify; animation: fadeIn 0.3s ease;">
+                            <h4 style="color: var(--text-main); margin-bottom: 10px; font-size: 0.95rem;">📖 Guia Técnico</h4>
+                            <p style="margin-bottom: 8px;"><strong>Função:</strong> Consultar especificações técnicas, faixas de temperatura operacional, composição das ligas metálicas e o padrão de cores (Norma ANSI) dos principais termopares industriais.</p>
+                            <p style="margin-bottom: 8px;"><strong>Como usar:</strong> Selecione a letra correspondente ao tipo de termopar no menu. Os dados de aplicação, as restrições industriais e as cores corretas para os cabos de extensão/compensação serão atualizados instantaneamente.</p>
+                            <p style="margin-bottom: 0;"><strong>Princípio Físico:</strong> Este instrumento baseia-se no <strong>Efeito Seebeck</strong>, onde a união de dois condutores metálicos distintos submetidos a um gradiente térmico gera uma pequena força eletromotriz (sinal em milivolts) proporcional à temperatura medida.</p>
+                        </div>
+
                         <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:15px;">Selecione o tipo de termopar para consultar suas especificações técnicas e indicações industriais.</p>
                         <div class="control-group">
                             <h4>Tipo de Termopar</h4>
@@ -715,20 +829,32 @@
                 </div>
             </div>
 
+            <!-- ========== BOMBAS CENTRÍFUGAS ========== -->
             <div id="tool-pump" style="display: none;">
                 <div style="display: flex; justify-content: center; align-items: center; position: relative; margin-bottom: 15px;">
                     <button class="btn-voltar" onclick="closeTool('tool-pump')" style="margin-bottom: 0; position: absolute; left: 0;">← Voltar</button>
                     <h3 style="color: var(--text-main); font-size: 1.1rem; margin: 0;">Bombas Centrífugas</h3>
                 </div>
 
+                <!-- Abas internas da ferramenta de bombas -->
                 <div class="segmented-control">
                     <button class="segmented-btn active" onclick="togglePumpTab('affinity', this)">Leis de Afinidade</button>
                     <button class="segmented-btn" onclick="togglePumpTab('npsh', this)">Cálculo de NPSH</button>
                 </div>
                 
+                <!-- Aba Leis de Afinidade -->
                 <div id="pump-panel-affinity" class="panel">
-                    <div class="panel-header" style="display:none;"><h3>Leis de Afinidade</h3></div>
+                    <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center;">
+                        <h3 style="margin: 0;">Leis de Afinidade</h3>
+                        <button onclick="toggleAjuda('ajuda-bombas')" style="background: none; border: none; font-size: 1.2rem; cursor: pointer; padding: 0; outline: none;" title="Ver Documentação">❓</button>
+                    </div>
                     <div class="panel-body">
+                        <div id="ajuda-bombas" class="info-box" style="display: none; border-left-color: var(--primary); margin-bottom: 20px; text-align: justify; animation: fadeIn 0.3s ease;">
+                            <h4 style="color: var(--text-main); margin-bottom: 10px; font-size: 0.95rem;">📖 Guia Técnico</h4>
+                            <p style="margin-bottom: 8px;"><strong>Leis de Afinidade:</strong> Preveem o impacto físico num sistema de bombagem quando a rotação do motor é alterada (normalmente via Inversor de Frequência). A vazão varia de forma linear, a altura manométrica ao quadrado, e a potência consumida ao cubo.</p>
+                            <p style="margin-bottom: 0;"><strong>Cálculo de NPSH:</strong> (Disponível na aba ao lado). Avalia o <i>Net Positive Suction Head</i> disponível na sucção da bomba. Se a energia do fluido cair abaixo da sua pressão de vapor devido a desníveis acentuados ou atrito, o líquido ferve a frio (Cavitação), destruindo o impelidor da bomba.</p>
+                        </div>
+                        
                         <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:15px;">Simule o comportamento do processo ao alterar a rotação de uma bomba operada por Inversor de Frequência.</p>
                         
                         <div style="display:flex; gap:10px; margin-bottom:10px;">
@@ -737,20 +863,21 @@
                         </div>
                         <div style="display:flex; gap:10px; margin-bottom:10px;">
                             <div style="flex:1;"><label style="font-size:0.8rem;">Vazão Inicial (Q1)</label><input type="number" id="pumpQ1" value="100" class="input-moderno" inputmode="decimal"></div>
-                            <div style="flex:1;"><label style="font-size:0.8rem;">Nova Vazão (Q2)</label><div class="input-moderno" style="background:#020617; color:var(--primary); font-weight:bold;" id="pumpQ2">---</div></div>
+                            <div style="flex:1;"><label style="font-size:0.8rem;">Nova Vazão (Q2)</label><div class="input-moderno" style="background:var(--bg-main); color:var(--primary); font-weight:bold;" id="pumpQ2">---</div></div>
                         </div>
                         <div style="display:flex; gap:10px; margin-bottom:10px;">
                             <div style="flex:1;"><label style="font-size:0.8rem;">Altura Inicial (H1)</label><input type="number" id="pumpH1" value="50" class="input-moderno" inputmode="decimal"></div>
-                            <div style="flex:1;"><label style="font-size:0.8rem;">Nova Altura (H2)</label><div class="input-moderno" style="background:#020617; color:var(--primary); font-weight:bold;" id="pumpH2">---</div></div>
+                            <div style="flex:1;"><label style="font-size:0.8rem;">Nova Altura (H2)</label><div class="input-moderno" style="background:var(--bg-main); color:var(--primary); font-weight:bold;" id="pumpH2">---</div></div>
                         </div>
                         <div style="display:flex; gap:10px; margin-bottom:15px;">
                             <div style="flex:1;"><label style="font-size:0.8rem;">Potência Inicial (P1)</label><input type="number" id="pumpP1" value="10" class="input-moderno" inputmode="decimal"></div>
-                            <div style="flex:1;"><label style="font-size:0.8rem;">Nova Potência (P2)</label><div class="input-moderno" style="background:#020617; color:var(--primary); font-weight:bold;" id="pumpP2">---</div></div>
+                            <div style="flex:1;"><label style="font-size:0.8rem;">Nova Potência (P2)</label><div class="input-moderno" style="background:var(--bg-main); color:var(--primary); font-weight:bold;" id="pumpP2">---</div></div>
                         </div>
                         <div class="aviso">💡 <strong>Regra de Ouro:</strong> A potência cai ao cubo. Reduzir a rotação em apenas 20% economiza quase 50% de energia elétrica!</div>
                     </div>
                 </div>
 
+                <!-- Aba Cálculo de NPSH -->
                 <div id="pump-panel-npsh" class="panel" style="display: none;">
                     <div class="panel-header" style="display:none;"><h3>Cálculo de NPSH</h3></div>
                     <div class="panel-body">
@@ -769,7 +896,7 @@
                             <div style="flex:1;"><label style="font-size:0.8rem;">Perda Carga (mca)</label><input type="number" id="pumpHf" value="1.5" class="input-moderno" inputmode="decimal" step="any"></div>
                         </div>
                         <div class="result-box" style="margin-top: 15px; border-color: var(--border);">
-                            <span style="color:var(--text-muted); font-size:0.85rem; display:block; text-transform:uppercase;">NPSH Disponível</span>
+                            <span style="color:var(--text-muted); font-size:0.85rem; display:block; text-transform:uppercase;">NPSH Disponível ($NPSH_d$)</span>
                             <span class="result-val" id="pumpNpshResult" style="font-size: 1.8rem; margin: 5px 0;">---</span>
                             <span id="pumpNpshMsg" style="font-size:0.85rem; margin-top:5px; display:block; color:var(--text-muted); line-height: 1.3;">---</span>
                         </div>
@@ -778,6 +905,7 @@
             </div>
         </div>
 
+        <!-- ABA Vitrine (loja de afiliados) -->
         <div id="tab-store" class="tab-content">
             <h2 class="section-title">Vitrine Técnica</h2>
             <div class="info-box" style="border-left-color: var(--primary); text-align: justify;">
@@ -835,7 +963,7 @@
             </div>
         </div>
 
-        <!-- ============= ABA SOBRE ============= -->
+        <!-- ABA Opções e Sobre -->
         <div id="tab-about" class="tab-content">
             <h2 class="section-title">Opções e Sobre</h2>
             
@@ -844,7 +972,6 @@
                 
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                     <span style="font-size: 0.9rem; font-weight: 600; color: var(--text-main);">Tema Claro (Modo Campo)</span>
-                    
                     <label style="position: relative; display: inline-block; width: 50px; height: 26px;">
                         <input type="checkbox" id="themeToggle" style="opacity: 0; width: 0; height: 0;">
                         <span class="switch-slider"></span>
@@ -857,16 +984,13 @@
 
             <div class="card">
                 <h3 style="color: var(--accent); font-size: 1.1rem; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 15px;">ℹ️ Sobre a Aplicação</h3>
-
                 <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5; text-align: justify;">Hub oficial do projeto <strong style="color: var(--text-main);">Automação & Instrumentação BR</strong> desenvolvido para fornecer suporte analítico e prático a estudantes e profissionais de manutenção industrial.</p>
-                
                 <a href="https://www.autoeinstrubr.com.br/" target="_blank" class="btn-secondary" style="display: block; text-align: center; text-decoration: none; padding: 12px; background: var(--primary); color: #020617; border: none; font-size: 0.9rem; font-weight: 600; box-shadow: 0 4px 6px rgba(0,0,0,0.15);">🌐 Site Oficial</a>
             </div>
 
             <div class="card">
                 <h3 style="color: var(--accent); font-size: 1.1rem; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 15px;">📞 Suporte e Feedback</h3>
                 <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 15px; line-height: 1.5; text-align: justify;">Encontrou algum erro ou tem uma sugestão para uma nova ferramenta? Envie uma mensagem direta para a manutenção.</p>
-                
                 <a href="mailto:autoeinstrubr@gmail.com?subject=Sugestão/Erro - App Automação BR&body=Olá Automação & Instrumentação BR,%0D%0A%0D%0AGostaria de reportar o seguinte:%0D%0A" 
                    class="btn-secondary" 
                    style="display: block; text-align: center; text-decoration: none; padding: 12px; background: transparent; color: var(--text-main); border: 1px solid var(--border); font-size: 0.9rem; font-weight: 600; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
@@ -878,14 +1002,12 @@
                 <a href="https://www.autoeinstrubr.com.br/p/politica-de-privacidade.html" target="_blank" style="color: var(--text-muted); font-size: 0.8rem; text-decoration: none; font-weight: 500; transition: 0.2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-muted)'">Política de Privacidade</a>
                 <span style="color: var(--border); font-size: 0.8rem; margin: 0 8px;">|</span>
                 <a href="https://www.autoeinstrubr.com.br/p/termos-de-uso.html" target="_blank" style="color: var(--text-muted); font-size: 0.8rem; text-decoration: none; font-weight: 500; transition: 0.2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-muted)'">Termos de Uso</a>
-                
                 <p style="color: var(--border); font-size: 0.75rem; margin-top: 12px; letter-spacing: 0.5px;">Versão 1.0.0</p>
             </div>
-            
         </div>
-
     </main>
 
+    <!-- Barra de navegação inferior -->
     <nav class="bottom-nav">
         <button class="nav-item active" onclick="switchTab('feed', this)"><svg viewBox="0 0 24 24"><path d="M20 3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h8v2zm3-4H7v-2h11v2zm0-4H7V7h11v2z"/></svg><span>Artigos</span></button>
         <button class="nav-item" onclick="switchTab('tools', this)"><svg viewBox="0 0 24 24"><path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.1L7 6 4 3 2.6 4.4 5.6 7.4 3.3 9.7c1.3 2.4 3.9 3.1 5.9 1.1 1.9-1.9 2.5-4.5 1.5-6.8L19 12.3c-.3.3-.3.8 0 1.1l1.5 1.5c.3.3.8.3 1.1 0l1.1-1.1c.3-.3.3-.8 0-1.1z"/></svg><span>Ferramentas</span></button>
@@ -895,6 +1017,7 @@
 
     <script>
         // ========================== SISTEMA DE NAVEGAÇÃO E ABAS ==========================
+        // Alterna entre as abas principais (feed, tools, store, about)
         function switchTab(tabId, element) {
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
@@ -902,18 +1025,32 @@
             element.classList.add('active');
         }
 
+        // Abre uma ferramenta específica, ocultando o menu principal
         function openTool(toolId) {
             document.getElementById('tools-menu').style.display = 'none';
             document.getElementById(toolId).style.display = 'block';
-            if (toolId === 'tool-pid') window.dispatchEvent(new Event('resize'));
+            if (toolId === 'tool-pid') window.dispatchEvent(new Event('resize')); // força redesenho do canvas
         }
 
+        // Fecha a ferramenta atual e volta ao menu principal
         function closeTool(toolId) {
             document.getElementById(toolId).style.display = 'none';
             document.getElementById('tools-menu').style.display = 'block';
         }
 
+        // ========================== SISTEMA DE AJUDA CONTEXTUAL ==========================
+        // Exibe/oculta o box de ajuda dentro de cada ferramenta
+        function toggleAjuda(idAjuda) {
+            const painel = document.getElementById(idAjuda);
+            if (painel.style.display === 'none' || painel.style.display === '') {
+                painel.style.display = 'block';
+            } else {
+                painel.style.display = 'none';
+            }
+        }
+
         // ========================== CONTROLE DE ABAS (BOMBAS) ==========================
+        // Alterna entre as sub-abas "Leis de Afinidade" e "Cálculo de NPSH"
         function togglePumpTab(tab, btnElement) {
             document.getElementById('pump-panel-affinity').style.display = 'none';
             document.getElementById('pump-panel-npsh').style.display = 'none';
@@ -928,15 +1065,16 @@
         }
 
         // ========================== FEED DE ARTIGOS (BLOG) ==========================
-        let artigoStartIndex = 1;
-        const artigosPorPagina = 10;
+        let artigoStartIndex = 1;          // página atual (índice inicial)
+        const artigosPorPagina = 10;       // quantos artigos por página
 
+        // Carrega os artigos do Blogger via JSONP/JSON e exibe na tela
         async function carregarArtigos() {
             const feedContainer = document.getElementById('feed-container');
             const btnPrev = document.getElementById('btnPrev');
             const btnNext = document.getElementById('btnNext');
 
-            // Gera 3 "esqueletos" de cards para simular o layout enquanto carrega
+            // Exibe skeleton loading (3 cards fantasmas)
             let skeletonHTML = '';
             for(let i = 0; i < 3; i++) {
                 skeletonHTML += `
@@ -953,6 +1091,7 @@
             }
             feedContainer.innerHTML = skeletonHTML;
 
+            // Esconde botões de paginação enquanto carrega
             if (btnPrev) btnPrev.style.display = 'none';
             if (btnNext) btnNext.style.display = 'none';
 
@@ -973,6 +1112,7 @@
                     return;
                 }
 
+                // Monta cada card de artigo
                 artigos.forEach(artigo => {
                     let link = artigo.link.find(l => l.rel === 'alternate').href;
                     let imagem = artigo.media$thumbnail ? artigo.media$thumbnail.url.replace('/s72-c/', '/w600/') : 'https://via.placeholder.com/600x300/1e293b/38bdf8?text=Automação+e+Instrumentação';
@@ -988,6 +1128,7 @@
                     `);
                 });
 
+                // Controle de visibilidade dos botões de paginação
                 if (btnPrev) btnPrev.style.display = artigoStartIndex > 1 ? 'block' : 'none';
                 const totalResultados = parseInt(dados.feed.openSearch$totalResults.$t) || 0;
                 if (btnNext) btnNext.style.display = (artigoStartIndex + artigosPorPagina <= totalResultados) ? 'block' : 'none';
@@ -999,6 +1140,7 @@
             }
         }
 
+        // Navega entre páginas do feed (anterior/próxima)
         function mudarPagina(direcao) {
             if (direcao === 1) {
                 artigoStartIndex += artigosPorPagina;
@@ -1007,28 +1149,23 @@
             }
             carregarArtigos();
             const mainElement = document.querySelector('main');
-            if (mainElement) mainElement.scrollTop = 0;
+            if (mainElement) mainElement.scrollTop = 0; // volta ao topo
         }
 
+        // Força a atualização do feed (utilizado no botão na aba "Sobre")
         function forcarAtualizacaoBlog(btnElement) {
-            // 1. Feedback visual imediato e bloqueio de múltiplos cliques
             const textoOriginal = btnElement.innerHTML;
             btnElement.innerHTML = '⏳ A atualizar feed...';
             btnElement.style.opacity = '0.7';
             btnElement.style.pointerEvents = 'none'; 
 
-            // 2. Reinicia a paginação para garantir que busca as notícias mais recentes (Página 1)
-            artigoStartIndex = 1;
+            artigoStartIndex = 1; // volta para a primeira página
 
-            // 3. Chama a função original (que é assíncrona) e espera que termine
             carregarArtigos().then(() => {
-                // 4. Feedback de sucesso visual
                 btnElement.innerHTML = '✅ Atualizado com Sucesso!';
                 btnElement.style.color = 'var(--primary)';
                 btnElement.style.borderColor = 'var(--primary)';
                 btnElement.style.opacity = '1';
-                
-                // 5. Após 2 segundos, o botão volta ao estado original normal
                 setTimeout(() => {
                     btnElement.innerHTML = textoOriginal;
                     btnElement.style.color = 'var(--text-main)';
@@ -1038,6 +1175,7 @@
             });
         }
 
+        // Carrega os artigos assim que a página terminar de carregar
         document.addEventListener('DOMContentLoaded', carregarArtigos);
 
         // ========================== FERRAMENTA ISA 5.1 (Avançada) ==========================
@@ -1049,6 +1187,7 @@
             const isaResultSpan = document.getElementById('isaResult');
             const isaTagDisplaySpan = document.getElementById('isaTagDisplay'); 
 
+            // Atualiza a descrição do TAG conforme as seleções
             function atualizarIsa() {
                 const v = isaVarSelect.value;
                 const m = isaModSelect.value;
@@ -1087,6 +1226,7 @@
             const cvSpan = document.getElementById('resCv');
             const vlvWarnings = document.getElementById('vlvWarnings'); 
 
+            // Calcula Kv, Cv e exibe alertas (oversizing e Reynolds)
             function calcularValvula() {
                 let q = +vazaoInput.value;
                 let p1 = +pressaoEntrada.value;
@@ -1132,7 +1272,7 @@
             }
         })();
 
-       // ========================== FERRAMENTA PT100 (Callendar-Van Dusen) ==========================
+        // ========================== FERRAMENTA PT100 (Callendar-Van Dusen) ==========================
         (function initPT100() {
             const sinalOhms = document.getElementById('thermoSignal');
             const temperaturaCelsius = document.getElementById('thermoTemp');
@@ -1140,6 +1280,7 @@
             if (sinalOhms) {
                 const R0 = 100.0, A = 3.9083e-3, B = -5.775e-7, C = -4.183e-12;
 
+                // Converte temperatura -> resistência (Ohms)
                 function tempParaResistencia(t) {
                     if (t < -200) t = -200;
                     if (t > 850) t = 850;
@@ -1147,6 +1288,7 @@
                     else return (R0 * (1 + A * t + B * t * t + C * (t - 100) * Math.pow(t, 3))).toFixed(2);
                 }
 
+                // Converte resistência -> temperatura (°C) - método iterativo para negativos
                 function resistenciaParaTemp(r) {
                     if (r < 18.52) r = 18.52;   
                     if (r > 390.48) r = 390.48; 
@@ -1192,6 +1334,7 @@
                 return { min: +minLRV.value || 0, max: +maxURV.value || 100 };
             }
 
+            // Recalcula a partir do valor em mA
             function recalcularPorCorrente() {
                 let ma = +correnteMa.value;
                 if (isNaN(ma)) return;
@@ -1208,6 +1351,7 @@
                 valorPv.value = (faixa.min + (outPct / 100) * (faixa.max - faixa.min)).toFixed(2);
             }
 
+            // Recalcula a partir da porcentagem
             function recalcularPorPorcentagem() {
                 let outPct = +porcentagem.value;
                 if (isNaN(outPct)) return;
@@ -1223,6 +1367,7 @@
                 valorPv.value = (faixa.min + (outPct / 100) * (faixa.max - faixa.min)).toFixed(2);
             }
 
+            // Recalcula a partir da variável de processo (PV)
             function recalcularPorPv() {
                 let pv = +valorPv.value;
                 if (isNaN(pv)) return;
@@ -1286,6 +1431,7 @@
 
             if(!n1 || !patm) return;
 
+            // Leis de afinidade
             function calcAffinity() {
                 const valN1 = parseFloat(n1.value);
                 const valN2 = parseFloat(n2.value);
@@ -1302,6 +1448,7 @@
                 if (!isNaN(valP1)) resP2.textContent = (valP1 * Math.pow(ratio, 3)).toFixed(2);
             }
 
+            // Cálculo do NPSH disponível
             function calcNPSH() {
                 const type = sucType.value;
                 const valPatm = parseFloat(patm.value);
@@ -1319,11 +1466,11 @@
                 resNpsh.textContent = npshd.toFixed(2) + ' mca';
 
                 if (npshd < 2) {
-                    resNpsh.style.color = 'var(--danger)';
+                    resNpsh.style.color = '#ef4444';  // vermelho (danger)
                     msgNpsh.textContent = '⚠️ Risco CRÍTICO de cavitação. O NPSH Disponível é perigosamente baixo.';
-                    msgNpsh.style.color = 'var(--danger)';
+                    msgNpsh.style.color = '#ef4444';
                 } else if (npshd < 5) {
-                    resNpsh.style.color = '#eab308'; 
+                    resNpsh.style.color = '#eab308';  // amarelo (aviso)
                     msgNpsh.textContent = 'Atenção: O NPSH Requerido (NPSHr) da bomba no catálogo deve ser estritamente menor que este valor.';
                     msgNpsh.style.color = '#eab308';
                 } else {
@@ -1356,6 +1503,7 @@
                 length: { 'metro': 1, 'milímetro': 1000, 'polegada': 39.37 }
             };
 
+            // Popula os selects de acordo com a categoria escolhida
             function popularUnidades() {
                 let cat = categoriaUnidade.value;
                 selecaoUnidade1.innerHTML = '';
@@ -1369,6 +1517,7 @@
                 converterUnidade(1);
             }
 
+            // Lógica de conversão de temperatura (Celsius, Fahrenheit, Kelvin)
             function converterTemperatura(valor, de, para) {
                 let celsius = de === 'Celsius' ? valor : de === 'Fahrenheit' ? (valor - 32) / 1.8 : valor - 273.15;
                 if (para === 'Celsius') return celsius;
@@ -1376,6 +1525,7 @@
                 return celsius + 273.15;
             }
 
+            // Converte unidades baseado no sentido (1 = campo1 -> campo2, 2 = campo2 -> campo1)
             function converterUnidade(sentido) {
                 let cat = categoriaUnidade.value;
                 let v1 = +entradaUnidade1.value;
@@ -1406,7 +1556,7 @@
         (function initOrifice() {
             const fluidSelect = document.getElementById('orificeFluid');
             const densityInput = document.getElementById('orificeDensity');
-            const viscInput = document.getElementById('orificeVisc'); // Novo
+            const viscInput = document.getElementById('orificeVisc');
             const pipeDiam = document.getElementById('orificePipeDiam');
             const holeDiam = document.getElementById('orificeHoleDiam');
             const deltaP = document.getElementById('orificeDeltaP');
@@ -1415,14 +1565,15 @@
             
             const densityHint = document.getElementById('densityHint');
             const betaWarning = document.getElementById('betaWarning');
-            const reWarning = document.getElementById('reynoldsWarning'); // Novo
+            const reWarning = document.getElementById('reynoldsWarning');
 
             const betaSpan = document.getElementById('orificeBeta');
             const cSpan = document.getElementById('orificeC');
-            const reSpan = document.getElementById('orificeRe'); // Novo
+            const reSpan = document.getElementById('orificeRe');
             const flowVolSpan = document.getElementById('orificeFlowVol');
             const flowMassSpan = document.getElementById('orificeFlowMass');
 
+            // Calcula densidade do vapor (equação dos gases ideais)
             function vaporDensity(P_bar_abs, T_Celsius) {
                 const P_Pa = P_bar_abs * 1e5;
                 const T_K = T_Celsius + 273.15;
@@ -1431,15 +1582,16 @@
                 return P_Pa / (R * T_K);
             }
 
+            // Atualiza dicas de densidade/viscosidade conforme o fluido selecionado
             function updateDensityHint() {
                 const fluid = fluidSelect.value;
                 if (fluid === 'agua') {
                     densityInput.value = 1000; densityInput.disabled = true;
-                    viscInput.value = 1.0;     // Viscosidade da água ~1.0 cP
+                    viscInput.value = 1.0;
                     densityHint.textContent = 'Água: Densidade = 1000 kg/m³ | Viscosidade = 1.0 cP';
                 } else {
                     densityInput.disabled = false;
-                    viscInput.value = 0.015;   // Chute inicial para vapor ~0.015 cP
+                    viscInput.value = 0.015;   // Chute inicial para vapor
                     let P = parseFloat(staticP.value);
                     let T = parseFloat(temp.value);
                     if (!isNaN(P) && !isNaN(T)) {
@@ -1452,6 +1604,7 @@
                 }
             }
 
+            // Cálculo iterativo da vazão pela placa de orifício (ISO 5167)
             function calcularVazaoOrificio() {
                 let D_mm = parseFloat(pipeDiam.value);
                 let d_mm = parseFloat(holeDiam.value);
@@ -1470,38 +1623,29 @@
                 let d = d_mm / 1000;
                 let beta = d / D;
                 let dp_Pa = dp_mbar * 100;
-                let visc_Pa_s = visc_cp / 1000; // Conversão de cP para Pa.s
+                let visc_Pa_s = visc_cp / 1000;
                 
                 let A0 = Math.PI * d * d / 4;
                 let E = 1 / Math.sqrt(1 - Math.pow(beta, 4));
 
-                // 1. Chute inicial: Escoamento altamente turbulento (Re = 10^6)
-                let Re = 1e6;
+                let Re = 1e6;  // chute inicial
                 let C = 0;
                 let m_dot = 0;
 
-                // 2. Loop de Iteração (Equação de Stolz para Tomadas de Flange)
-                // O valor converge incrivelmente rápido, 5 iterações são mais que suficientes.
+                // Iteração de Stolz (5 ciclos)
                 for (let i = 0; i < 5; i++) {
-                    // Equação de Stolz simplificada (Flange Taps)
                     C = 0.5959 + 0.0312 * Math.pow(beta, 2.1) - 0.184 * Math.pow(beta, 8) + 91.71 * Math.pow(beta, 2.5) * Math.pow(Re, -0.75);
-                    
-                    // Recalcula Vazão Mássica (kg/s)
                     m_dot = C * E * A0 * Math.sqrt(2 * rho * dp_Pa);
-                    
-                    // Recalcula Reynolds do Tubo
                     Re = (4 * m_dot) / (Math.PI * D * visc_Pa_s);
                 }
 
-                // 3. Atualizar Interface Visual
                 betaSpan.textContent = beta.toFixed(4);
                 cSpan.textContent = C.toFixed(4);
                 
-                // Formatação bonita para o Reynolds (ex: 1.25e+5 ou 125,000)
                 if(Re > 1e6) { reSpan.textContent = Re.toExponential(2); } 
                 else { reSpan.textContent = Math.round(Re).toLocaleString('pt-BR'); }
 
-                // Diagnóstico Beta (Norma ISO 5167)
+                // Validação da relação beta
                 if (beta < 0.1 || beta > 0.75) {
                     betaWarning.textContent = `⚠️ β = ${beta.toFixed(4)} fora da norma ISO 5167 (0.1 a 0.75). A incerteza da medição será alta.`;
                     betaWarning.style.display = 'block';
@@ -1509,7 +1653,7 @@
                     betaWarning.style.display = 'none';
                 }
 
-                // Diagnóstico Reynolds Escoamento Laminar / Transição
+                // Alerta para baixo número de Reynolds
                 if (Re < 10000) {
                     reWarning.innerHTML = `<strong>⚠️ Alerta de Escoamento (Re = ${Math.round(Re)}):</strong> O regime está abaixo de 10.000. O escoamento não é totalmente turbulento, quebrando a premissa de constância da placa de orifício. Leituras altamente imprecisas.`;
                     reWarning.style.display = 'block';
@@ -1523,7 +1667,6 @@
                     flowVolSpan.textContent = 'erro'; flowMassSpan.textContent = 'erro'; return;
                 }
 
-                // 4. Resultados Finais
                 let m_dot_kg_h = m_dot * 3600;
                 let vol_m3_h = m_dot_kg_h / rho;
 
@@ -1539,7 +1682,7 @@
             if (fluidSelect) {
                 fluidSelect.addEventListener('change', updateAndCalculate);
                 densityInput.addEventListener('input', calcularVazaoOrificio);
-                viscInput.addEventListener('input', calcularVazaoOrificio); // Listener para viscosidade
+                viscInput.addEventListener('input', calcularVazaoOrificio);
                 pipeDiam.addEventListener('input', calcularVazaoOrificio);
                 holeDiam.addEventListener('input', calcularVazaoOrificio);
                 deltaP.addEventListener('input', calcularVazaoOrificio);
@@ -1554,6 +1697,7 @@
             const tcSelect = document.getElementById('tcType');
             if (!tcSelect) return;
 
+            // Base de dados dos termopares (composição, faixa, cores)
             const termopares = {
                 J: { comp: "Ferro (+) / Constanta (-)", range: "-40°C a 750°C", notes: "Não recomendado acima de 750°C devido à rápida oxidação do ferro.", cPos: "Branco", cPosBg: "#ffffff", cPosFg: "#000000", cJack: "Preto", cJackBg: "#000000", cJackFg: "#ffffff" },
                 K: { comp: "Cromel (+) / Alumel (-)", range: "-200°C a 1250°C", notes: "Uso geral. Evitar atmosferas redutoras.", cPos: "Amarelo", cPosBg: "#fef08a", cPosFg: "#713f12", cJack: "Amarelo", cJackBg: "#fef08a", cJackFg: "#713f12" },
@@ -1588,6 +1732,7 @@
             if (!canvas) return;
             let ctx = canvas.getContext('2d');
 
+            // Ajusta o tamanho do canvas responsivamente
             function resizeCanvas() {
                 const container = canvas.parentElement;
                 const width = container.clientWidth - 32; 
@@ -1613,6 +1758,7 @@
             const modeSelect = document.getElementById('simMode');
             let animationFrameId = null;
 
+            // Habilita/desabilita sliders de Ki e Kd conforme o modo escolhido
             function atualizarInterfaceModo() {
                 const modo = modeSelect.value;
                 const kiRow = document.getElementById('simKiRow');
@@ -1621,6 +1767,7 @@
                 if (kdRow) { kdRow.style.opacity = (modo === 'P' || modo === 'PI') ? '0.4' : '1'; kdRow.style.pointerEvents = (modo === 'P' || modo === 'PI') ? 'none' : 'auto'; }
             }
 
+            // Executa a simulação (síncrona ou animada)
             function executarSimulacao(animar = false) {
                 if (animationFrameId) cancelAnimationFrame(animationFrameId);
                 const modo = modeSelect.value;
@@ -1629,6 +1776,7 @@
                 let kd = (modo === 'P' || modo === 'PI') ? 0 : +inputs.kd.value;
                 const K = +inputs.kPlant.value, tau = +inputs.tau.value, theta = +inputs.theta.value, setpoint = +inputs.sp.value;
 
+                // Atualiza displays dos valores
                 Object.keys(inputs).forEach(k => { if (displays[k]) displays[k].textContent = (+inputs[k].value).toFixed(2); });
 
                 let y = 0, integral = 0, y_prev = 0;
@@ -1638,10 +1786,12 @@
                 let dadosPV = [], dadosSP = [], dadosMV = [];
                 let maxPV = 0, maxMV = 0;
 
+                // Loop de integração numérica (Euler)
                 for (let t = 0; t <= totalTime + dt / 2; t += dt) {
                     const erro = setpoint - y;
                     let uRaw = (kp * erro) + (ki * integral) + (kd * -(y - y_prev) / dt);
                     let u = Math.min(satMax, Math.max(satMin, uRaw));
+                    // Anti-windup (não acumula integral se saturado)
                     if (!((u >= satMax && erro > 0) || (u <= satMin && erro < 0))) integral += erro * dt;
                     buffer[bufferIndex] = u;
                     const uAtrasado = buffer[(bufferIndex + atrasoSamples) % (atrasoSamples + 1)];
@@ -1655,6 +1805,7 @@
 
                 let maxValor = Math.max(maxPV, setpoint, maxMV * 0.8) || 1;
 
+                // Funções de desenho do gráfico
                 function desenharCurva(dados, cor, largura, tracejado = []) {
                     ctx.beginPath(); ctx.strokeStyle = cor; ctx.lineWidth = largura; ctx.setLineDash(tracejado);
                     dados.forEach((ponto, idx) => {
@@ -1667,7 +1818,9 @@
                 }
 
                 function desenharGrade() {
-                    ctx.clearRect(0, 0, canvas.width, canvas.height); ctx.strokeStyle = '#334155'; ctx.lineWidth = 1;
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.strokeStyle = '#334155';
+                    ctx.lineWidth = 1;
                     for (let i = 0; i <= 10; i++) {
                         let yPos = 40 + ((canvas.height - 80) / 10) * i;
                         let xPos = 40 + ((canvas.width - 80) / 10) * i;
@@ -1677,7 +1830,8 @@
                 }
 
                 function desenharLegendasEixos() {
-                    ctx.fillStyle = '#94a3b8'; ctx.font = '14px Inter';
+                    ctx.fillStyle = '#94a3b8';
+                    ctx.font = '14px Inter';
                     for (let i = 0; i <= 10; i++) {
                         let xTick = 40 + ((canvas.width - 80) / 10) * i;
                         ctx.fillText((totalTime / 10 * i).toFixed(0) + 's', xTick - 10, canvas.height - 15);
@@ -1700,14 +1854,25 @@
                 }
 
                 if (!animar) {
-                    desenharGrade(); desenharCurva(dadosSP, '#ef4444', 2); desenharCurva(dadosMV, '#38bdf8', 2, [5, 5]); desenharCurva(dadosPV, '#22c55e', 3); ctx.setLineDash([]); desenharLegendasEixos(); calcularMetricas();
+                    desenharGrade();
+                    desenharCurva(dadosSP, '#ef4444', 2);
+                    desenharCurva(dadosMV, '#38bdf8', 2, [5, 5]);
+                    desenharCurva(dadosPV, '#22c55e', 3);
+                    ctx.setLineDash([]);
+                    desenharLegendasEixos();
+                    calcularMetricas();
                 } else {
                     let passo = 0;
                     function animarFrame() {
                         passo += 4;
                         const finalizado = passo >= dadosPV.length;
                         const limite = finalizado ? dadosPV.length : passo;
-                        desenharGrade(); desenharCurva(dadosSP.slice(0, limite), '#ef4444', 2); desenharCurva(dadosMV.slice(0, limite), '#38bdf8', 2, [5, 5]); desenharCurva(dadosPV.slice(0, limite), '#22c55e', 3); ctx.setLineDash([]); desenharLegendasEixos();
+                        desenharGrade();
+                        desenharCurva(dadosSP.slice(0, limite), '#ef4444', 2);
+                        desenharCurva(dadosMV.slice(0, limite), '#38bdf8', 2, [5, 5]);
+                        desenharCurva(dadosPV.slice(0, limite), '#22c55e', 3);
+                        ctx.setLineDash([]);
+                        desenharLegendasEixos();
                         if (!finalizado) animationFrameId = requestAnimationFrame(animarFrame);
                         else calcularMetricas();
                     }
@@ -1715,6 +1880,7 @@
                 }
             }
 
+            // Event listeners
             Object.keys(inputs).forEach(k => { if (inputs[k]) inputs[k].addEventListener('input', () => executarSimulacao(false)); });
             if (modeSelect) modeSelect.addEventListener('change', () => { atualizarInterfaceModo(); executarSimulacao(false); });
             const btnExecutar = document.getElementById('simExecBtn'), btnReset = document.getElementById('simResetBtn');
@@ -1722,31 +1888,30 @@
             if (btnReset) {
                 btnReset.addEventListener('click', () => {
                     inputs.kp.value = 2.0; inputs.ki.value = 0.8; inputs.kd.value = 1.2; inputs.kPlant.value = 1.0; inputs.tau.value = 2.0; inputs.theta.value = 0.0; inputs.sp.value = 1.0;
-                    modeSelect.value = 'PID'; atualizarInterfaceModo(); executarSimulacao(false);
+                    modeSelect.value = 'PID';
+                    atualizarInterfaceModo();
+                    executarSimulacao(false);
                 });
             }
-
-            
 
             setTimeout(() => resizeCanvas(), 100);
             atualizarInterfaceModo();
             executarSimulacao(false);
         })();
 
-// ========================== SISTEMA DE GESTÃO DE TEMAS (PERSISTENTE) ==========================
+        // ========================== SISTEMA DE GESTÃO DE TEMAS (PERSISTENTE) ==========================
         (function initThemeSystem() {
             const themeToggle = document.getElementById('themeToggle');
             if (!themeToggle) return;
 
-            // 1. Verifica de imediato se o utilizador já guardou uma escolha prévia no armazenamento interno
+            // Recupera o tema salvo no localStorage
             const temaGuardado = localStorage.getItem('app-theme');
-            
             if (temaGuardado === 'light') {
                 document.body.classList.add('light-theme');
                 themeToggle.checked = true;
             }
 
-            // 2. Escuta as interações mecânicas no botão switch
+            // Alterna o tema ao clicar no switch
             themeToggle.addEventListener('change', () => {
                 if (themeToggle.checked) {
                     document.body.classList.add('light-theme');
@@ -1755,13 +1920,10 @@
                     document.body.classList.remove('light-theme');
                     localStorage.setItem('app-theme', 'dark');
                 }
-                
-                // Força um redimensionamento global do ecrã para recalibrar instantaneamente 
-                // o canvas gráfico do simulador PID às novas cores sem quebrar a proporção.
+                // Força redesenho do canvas PID para adaptar cores
                 window.dispatchEvent(new Event('resize'));
             });
         })();
-
     </script>
 </body>
 </html>
