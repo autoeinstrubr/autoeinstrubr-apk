@@ -1997,6 +1997,28 @@
                 window.dispatchEvent(new Event('resize'));
             });
         })();
+
+// ========================== INTERCEPTAÇÃO DO BOTÃO VOLTAR (CAPACITOR NATIVO) ==========================
+        document.addEventListener('DOMContentLoaded', () => {
+            // Verifica se a aplicação está a correr nativamente no telemóvel e se o plugin foi injetado
+            if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.App) {
+                
+                window.Capacitor.Plugins.App.addListener('backButton', () => {
+                    let hash = window.location.hash.substring(1);
+                    
+                    // Se o endereço tiver '#tool-...', significa que estamos dentro de uma ferramenta
+                    if (hash && hash.startsWith('tool-')) {
+                        // Força o HTML a recuar. O nosso evento 'hashchange' já existente fará o resto da magia!
+                        window.history.back();
+                    } else {
+                        // Se estivermos na raiz (Menu principal, Artigos, Vitrine), fecha a aplicação nativamente e com segurança
+                        window.Capacitor.Plugins.App.exitApp();
+                    }
+                });
+                
+            }
+        });
+
     </script>
 </body>
 </html>
