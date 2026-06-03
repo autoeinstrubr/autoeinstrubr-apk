@@ -1025,18 +1025,39 @@
             element.classList.add('active');
         }
 
-        // Abre uma ferramenta específica, ocultando o menu principal
+        // Abre uma ferramenta específica e cria um histórico no telemóvel
         function openTool(toolId) {
             document.getElementById('tools-menu').style.display = 'none';
             document.getElementById(toolId).style.display = 'block';
             if (toolId === 'tool-pid') window.dispatchEvent(new Event('resize')); // força redesenho do canvas
+
+            // O SEGREDO: Injeta um "passo" no histórico do Android
+            history.pushState({ ferramentaAberta: toolId }, '', '#' + toolId);
         }
 
-        // Fecha a ferramenta atual e volta ao menu principal
+        // Fecha a ferramenta atual (usado pelo botão "← Voltar" interno)
         function closeTool(toolId) {
-            document.getElementById(toolId).style.display = 'none';
-            document.getElementById('tools-menu').style.display = 'block';
+            // Em vez de fecharmos manualmente, mandamos o histórico voltar 1 passo.
+            // Isso vai ativar o botão de voltar do próprio sistema, acionando o evento abaixo.
+            history.back();
         }
+
+        // ========================== INTERCEPTAÇÃO DO BOTÃO VOLTAR DO ANDROID ==========================
+        window.addEventListener('popstate', function(event) {
+            // 1. Esconde TODAS as ferramentas preventivamente para limpar a tela
+            const todasAsFerramentas = document.querySelectorAll('#tab-tools > div[id^="tool-"]');
+            todasAsFerramentas.forEach(f => f.style.display = 'none');
+
+            // 2. Verifica se voltámos para o Menu Principal ou para outra ferramenta
+            if (event.state && event.state.ferramentaAberta) {
+                // Reabre a ferramenta se houver um estado salvo
+                document.getElementById('tools-menu').style.display = 'none';
+                document.getElementById(event.state.ferramentaAberta).style.display = 'block';
+            } else {
+                // Estado nulo = Voltámos para a raiz (Menu Principal da Caixa de Ferramentas)
+                document.getElementById('tools-menu').style.display = 'block';
+            }
+        });
 
         // ========================== SISTEMA DE AJUDA CONTEXTUAL ==========================
         // Exibe/oculta o box de ajuda dentro de cada ferramenta
