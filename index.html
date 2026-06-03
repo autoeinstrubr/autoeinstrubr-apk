@@ -1023,40 +1023,54 @@
             document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
             document.getElementById('tab-' + tabId).classList.add('active');
             element.classList.add('active');
+            
+            // NOVO: Limpa o histórico de navegação se o utilizador mudar de aba com uma ferramenta aberta
+            if (tabId !== 'tools' && window.location.hash) {
+                history.replaceState(null, null, window.location.pathname);
+                // Restaura o menu de ferramentas em segundo plano
+                const todasAsFerramentas = document.querySelectorAll('#tab-tools > div[id^="tool-"]');
+                todasAsFerramentas.forEach(f => f.style.display = 'none');
+                document.getElementById('tools-menu').style.display = 'block';
+            }
         }
 
-        // Abre uma ferramenta específica e cria um histórico no telemóvel
+        // Abre uma ferramenta alterando o Hash da URL (O Android reconhece isto perfeitamente)
         function openTool(toolId) {
-            document.getElementById('tools-menu').style.display = 'none';
-            document.getElementById(toolId).style.display = 'block';
-            if (toolId === 'tool-pid') window.dispatchEvent(new Event('resize')); // força redesenho do canvas
-
-            // O SEGREDO: Injeta um "passo" no histórico do Android
-            history.pushState({ ferramentaAberta: toolId }, '', '#' + toolId);
+            window.location.hash = toolId;
         }
 
-        // Fecha a ferramenta atual (usado pelo botão "← Voltar" interno)
+        // Fecha a ferramenta atual 
         function closeTool(toolId) {
-            // Em vez de fecharmos manualmente, mandamos o histórico voltar 1 passo.
-            // Isso vai ativar o botão de voltar do próprio sistema, acionando o evento abaixo.
             history.back();
         }
 
         // ========================== INTERCEPTAÇÃO DO BOTÃO VOLTAR DO ANDROID ==========================
-        window.addEventListener('popstate', function(event) {
-            // 1. Esconde TODAS as ferramentas preventivamente para limpar a tela
+        // Usamos o 'hashchange' em vez do 'popstate'. É a estratégia à prova de falhas para WebViews Nativas.
+        window.addEventListener('hashchange', function() {
+            let hash = window.location.hash.substring(1); // Remove o '#' da leitura
+
+            // 1. Esconde TODAS as ferramentas preventivamente
             const todasAsFerramentas = document.querySelectorAll('#tab-tools > div[id^="tool-"]');
             todasAsFerramentas.forEach(f => f.style.display = 'none');
 
-            // 2. Verifica se voltámos para o Menu Principal ou para outra ferramenta
-            if (event.state && event.state.ferramentaAberta) {
-                // Reabre a ferramenta se houver um estado salvo
+            // 2. Verifica se o hash pertence a uma ferramenta
+            if (hash && hash.startsWith('tool-')) {
+                // Esconde o menu e mostra a ferramenta
                 document.getElementById('tools-menu').style.display = 'none';
-                document.getElementById(event.state.ferramentaAberta).style.display = 'block';
+                document.getElementById(hash).style.display = 'block';
+                
+                // Força redesenho do canvas caso seja o simulador PID
+                if (hash === 'tool-pid') window.dispatchEvent(new Event('resize'));
             } else {
-                // Estado nulo = Voltámos para a raiz (Menu Principal da Caixa de Ferramentas)
+                // Se não houver hash, volta ao menu principal de forma segura
                 document.getElementById('tools-menu').style.display = 'block';
             }
+        });
+
+        // Limpa a URL na inicialização para evitar que o app abra "preso" dentro de uma ferramenta 
+        // caso o sistema operacional o reinicie da memória.
+        document.addEventListener('DOMContentLoaded', () => {
+            if(window.location.hash) history.replaceState(null, null, window.location.pathname);
         });
 
         // ========================== SISTEMA DE AJUDA CONTEXTUAL ==========================
